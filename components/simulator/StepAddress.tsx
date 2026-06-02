@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SatelliteMap } from '@/components/map/SatelliteMap'
 import { useT } from '@/providers/LanguageProvider'
 import type { SimState } from '@/types/simulator'
@@ -15,6 +15,16 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
   const { t } = useT()
   const q = t.stepAddress
   const [addressInput, setAddressInput] = useState(state.address)
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const el = document.getElementById('simulador')
+      if (!el) return
+      const top = el.getBoundingClientRect().top + window.scrollY - 80
+      window.scrollTo({ top, behavior: 'smooth' })
+    }, 100)
+    return () => window.clearTimeout(id)
+  }, [])
 
   const handleAddressSelect = (address: string, lat: number, lng: number) => {
     setAddress(address, lat, lng)

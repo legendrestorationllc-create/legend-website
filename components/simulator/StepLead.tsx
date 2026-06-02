@@ -46,8 +46,6 @@ export function StepLead({ state, setField, goNext }: Props) {
         <p style={{ fontSize: '0.8rem', color: 'var(--muted)', lineHeight: 1.5 }}>{q.privacy}</p>
       </div>
 
-      <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--muted)', fontWeight: 500 }}>{q.trustLine}</p>
-
       <button className="btn-primary" onClick={goNext} disabled={!canSubmit} style={{ width: '100%', justifyContent: 'center', fontSize: '1rem', padding: '1rem' }}>
         {q.cta}
       </button>

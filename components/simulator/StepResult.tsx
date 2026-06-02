@@ -44,12 +44,8 @@ export function StepResult({ state, setResult }: Props) {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  const scrollToTop = () => {
-    document.getElementById('simulador')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', paddingBottom: '0.5rem' }}>
       <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(201,168,76,.15)', color: '#C9A84C', border: '1px solid rgba(201,168,76,.4)', borderRadius: 999, padding: '0.4rem 1rem', fontSize: '0.6875rem', fontWeight: 700, fontFamily: 'var(--font-sora)', letterSpacing: '0.06em', marginBottom: '0.875rem', textTransform: 'uppercase' }}>
           {r.badge}
@@ -93,19 +89,37 @@ export function StepResult({ state, setResult }: Props) {
           <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', marginBottom: i < r.nextSteps.length - 1 ? '0.625rem' : 0 }}>
             <span style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--orange)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6875rem', fontWeight: 700, flexShrink: 0, fontFamily: 'var(--font-sora)', marginTop: 1 }}>{i + 1}</span>
             <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,.85)', lineHeight: 1.5 }}>
-              {i === 0 && state.phone ? step.replace('en menos', `al ${state.phone} en menos`) : step}
+              {step}
             </p>
           </div>
         ))}
       </div>
 
-      <div style={{ background: 'linear-gradient(135deg, #E8401C 0%, #C9A84C 100%)', borderRadius: 'var(--radius)', padding: '1rem 1.25rem', textAlign: 'center' }}>
-        <p style={{ fontSize: '0.9375rem', color: 'white', lineHeight: 1.6, fontWeight: 700 }}>{r.contactMessage}</p>
+      <div style={{ background: 'linear-gradient(135deg, #E8401C 0%, #C9A84C 100%)', borderRadius: 'var(--radius)', padding: '0.625rem 0.875rem', textAlign: 'center' }}>
+        <p style={{ fontSize: '0.875rem', color: 'white', lineHeight: 1.4, fontWeight: 700 }}>{r.contactMessage}</p>
       </div>
 
-      <button onClick={scrollToTop} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,.2)', color: 'rgba(255,255,255,.6)', borderRadius: 'var(--radius)', padding: '0.625rem', fontSize: '0.8125rem', cursor: 'pointer', fontFamily: 'var(--font-dm)', transition: 'all 0.2s' }}>
+      <a
+        href="https://wa.me/18633815735"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          background: '#059669',
+          border: 'none',
+          color: 'white',
+          borderRadius: 'var(--radius)',
+          padding: '1rem 1.25rem',
+          fontSize: '1rem',
+          fontWeight: 800,
+          textAlign: 'center',
+          textDecoration: 'none',
+          fontFamily: 'var(--font-sora)',
+          boxShadow: '0 6px 20px rgba(5,150,105,0.35)',
+          transition: 'all 0.2s',
+        }}
+      >
         {r.startOver}
-      </button>
+      </a>
     </div>
   )
 }

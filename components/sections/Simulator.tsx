@@ -35,12 +35,6 @@ export function Simulator() {
           advanceAnalyze={advanceAnalyze}
           setResult={setResult}
         />
-
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {t.simulator.trust.map((item) => (
-            <span key={item} style={{ fontSize: '0.8125rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>{item}</span>
-          ))}
-        </div>
       </div>
     </section>
   )

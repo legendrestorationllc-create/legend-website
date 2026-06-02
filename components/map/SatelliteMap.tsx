@@ -71,9 +71,11 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
       map.panTo({ lat, lng })
       setTimeout(() => {
         map.setZoom(19)
+        map.setCenter({ lat, lng })
         marker.setPosition({ lat, lng })
         marker.setVisible(true)
         setVerified(true)
+        setTimeout(() => map.setCenter({ lat, lng }), 250)
       }, 200)
     })
 

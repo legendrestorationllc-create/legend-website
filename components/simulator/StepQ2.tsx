@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MicroConfirm } from './MicroConfirm'
 import { useT } from '@/providers/LanguageProvider'
 import type { SimState, KnewOption } from '@/types/simulator'
@@ -16,6 +16,16 @@ export function StepQ2({ state, setKnew, goNext }: Props) {
   const q = t.stepQ2
   const [confirm, setConfirm] = useState<string | null>(null)
   const [advancing, setAdvancing] = useState(false)
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const el = document.getElementById('simulador')
+      if (!el) return
+      const top = el.getBoundingClientRect().top + window.scrollY - 80
+      window.scrollTo({ top, behavior: 'smooth' })
+    }, 100)
+    return () => window.clearTimeout(id)
+  }, [])
 
   const handleSelect = (value: KnewOption) => {
     if (advancing) return

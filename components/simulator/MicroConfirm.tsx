@@ -12,10 +12,11 @@ export function MicroConfirm({ message }: Props) {
       {message && (
         <motion.div
           className="micro-confirm"
-          initial={{ opacity: 0, y: -6, height: 0 }}
-          animate={{ opacity: 1, y: 0, height: 'auto' }}
-          exit={{ opacity: 0, y: -4, height: 0 }}
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.25 }}
+          style={{ marginBottom: '1rem' }}
         >
           <span style={{ lineHeight: 1.5 }}>{message}</span>
         </motion.div>

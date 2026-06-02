@@ -21,7 +21,7 @@ export function StepQ1({ state, toggleSign, goNext }: Props) {
   }, [state.signs, q.confirm])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative' }}>
       <div>
         <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem', fontFamily: 'var(--font-sora)' }}>
           {q.label}
@@ -49,7 +49,7 @@ export function StepQ1({ state, toggleSign, goNext }: Props) {
 
       <MicroConfirm message={confirm} />
 
-      <button className="btn-primary" onClick={goNext} disabled={state.signs.length === 0} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
+      <button className="btn-primary" onClick={goNext} disabled={state.signs.length === 0} style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem', position: 'relative', zIndex: 2 }}>
         {q.continue}
       </button>
     </div>

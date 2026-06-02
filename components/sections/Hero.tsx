@@ -39,38 +39,35 @@ export function Hero() {
       <div className="container-lg">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 500px), 1fr))', gap: '3rem', alignItems: 'center' }}>
           <motion.div {...fadeUp}>
-            <div className="badge" style={{ background: 'rgba(232,64,28,.15)', color: 'var(--orange)', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'inline-block', background: 'rgba(232, 64, 28, 0.2)', backdropFilter: 'blur(8px)', border: 'none', color: '#FFFFFF', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.08em', padding: '0.375rem 0.875rem', borderRadius: 999, marginBottom: '2rem' }}>
               {t.hero.badge}
             </div>
-            <h1 style={{ fontFamily: 'var(--font-sora)', fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'white', lineHeight: 1.1, marginBottom: '1rem' }}>
+            <h1 style={{ fontFamily: 'var(--font-sora)', fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'white', lineHeight: 1.15, marginBottom: '1.75rem' }}>
               {t.hero.h1}
               <span style={{ background: 'linear-gradient(135deg, var(--orange) 0%, #f5a623 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 {t.hero.h1Highlight}
               </span>
             </h1>
             {/* Urgency badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(232,64,28,.18)', border: '1px solid rgba(232,64,28,.4)', borderRadius: 999, padding: '0.375rem 1rem', marginBottom: '1.25rem', fontSize: '0.8125rem', fontWeight: 700, color: '#ffa07a', fontFamily: 'var(--font-sora)' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(232,64,28,.18)', border: '1px solid rgba(232,64,28,.4)', borderRadius: 999, padding: '0.375rem 1rem', marginBottom: '1.75rem', fontSize: '0.8125rem', fontWeight: 700, color: '#ffa07a', fontFamily: 'var(--font-sora)' }}>
               {t.hero.urgency}
             </div>
             {/* Visitor counter */}
             {visitors > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block', boxShadow: '0 0 6px #4ade80' }} />
                 <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,.65)', fontFamily: 'var(--font-dm)' }}>{t.hero.visitorText(visitors)}</span>
               </div>
             )}
-            <p style={{ fontSize: 'clamp(1rem, 2vw, 1.125rem)', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, marginBottom: '2rem', maxWidth: 500 }}>
+            <p style={{ fontSize: 'clamp(1rem, 2vw, 1.125rem)', color: 'rgba(255,255,255,.75)', lineHeight: 1.75, marginBottom: '2.5rem', maxWidth: 500 }}>
               {t.hero.sub}
               <strong style={{ color: 'white' }}>{t.hero.subStrong}</strong>
             </p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', marginBottom: '2.5rem' }}>
               <button className="btn-primary" onClick={scrollToSim} style={{ fontSize: '1.0625rem', padding: '1rem 2rem' }}>
                 {t.hero.cta}
               </button>
-              <a href={t.contact.phoneHref} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '1rem 1.5rem', border: '2px solid rgba(255,255,255,.25)', borderRadius: 'var(--radius)', color: 'white', fontFamily: 'var(--font-sora)', fontWeight: 600, fontSize: '0.9375rem', textDecoration: 'none', transition: 'border-color 0.2s, background 0.2s' }}>
-                📞 {t.hero.callNow}
-              </a>
             </div>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>

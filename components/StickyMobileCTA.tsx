@@ -1,13 +1,28 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useT } from '@/providers/LanguageProvider'
 
 export function StickyMobileCTA() {
   const { t } = useT()
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    const target = document.getElementById('simulador')
+    if (!target) return
+    const obs = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { threshold: 0.05 }
+    )
+    obs.observe(target)
+    return () => obs.disconnect()
+  }, [])
 
   const scrollToSim = () => {
     document.getElementById('simulador')?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  if (!visible) return null
 
   return (
     <>
