@@ -73,9 +73,9 @@ export function Header() {
           <a href={business.phoneHref} className="inline-flex items-center gap-1.5 font-sora text-sm font-bold" style={{ color: '#ffffff' }}>
             <span aria-hidden style={{ fontSize: '0.95rem' }}>☎</span> {business.phone}
           </a>
-          <Link href="/inspection" className="btn-primary" style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}>
+          <a href={`${business.whatsappHref}?text=Hola%2C%20quiero%20agendar%20una%20inspecci%C3%B3n%20gratis%20de%20mi%20techo.`} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}>
             {c.cta.freeInspection}
-          </Link>
+          </a>
         </nav>
 
         {/* Mobile controls */}
@@ -110,9 +110,9 @@ export function Header() {
             <a href={business.phoneHref} className="inline-flex items-center gap-2 py-3 font-dm text-base" style={{ color: 'rgba(255,255,255,.7)' }}>
               <Icon name="phone" size={17} /> {business.phone}
             </a>
-            <Link href="/inspection" className="btn-primary mt-3 w-full">
+            <a href={`${business.whatsappHref}?text=Hola%2C%20quiero%20agendar%20una%20inspecci%C3%B3n%20gratis%20de%20mi%20techo.`} target="_blank" rel="noopener noreferrer" className="btn-primary mt-3 w-full">
               {c.cta.freeInspection}
-            </Link>
+            </a>
           </div>
         </nav>
       )}

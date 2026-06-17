@@ -14,8 +14,8 @@ export const translations = {
     },
     hero: {
       badge: '🏠 #1 Roofing Contractor en Connecticut',
-      h1: 'Tu vecino ya tiene techo nuevo gratis. ',
-      h1Highlight: '¿Tú todavía no lo sabes?',
+      h1: 'Tu seguro puede pagar tu techo nuevo. ',
+      h1Highlight: 'Solo pagas tu deducible.',
       urgency: '⚠️ Solo quedan 7 cupos disponibles en Connecticut este mes',
       visitorText: (n: number) => `👀 ${n} personas están viendo esta página ahora`,
       sub: 'En Connecticut, el daño de tormenta puede calificar para reemplazo completo cubierto por tu aseguradora.',
@@ -240,8 +240,8 @@ export const translations = {
     },
     hero: {
       badge: '🏠 #1 Roofing Contractor in Connecticut',
-      h1: 'Your neighbor already has a free new roof. ',
-      h1Highlight: 'Did nobody tell you?',
+      h1: 'Your insurance could pay for your new roof. ',
+      h1Highlight: 'You only pay your deductible.',
       urgency: '⚠️ Only 7 spots available in Connecticut this month',
       visitorText: (n: number) => `👀 ${n} people are viewing this page now`,
       sub: 'In Connecticut, storm damage can qualify for complete replacement covered by your insurer.',
