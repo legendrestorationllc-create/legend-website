@@ -109,10 +109,10 @@ async function sendSheets(payload: LeadPayload): Promise<void> {
   const url = SHEETS_WEBHOOK_URL
   if (!url) return
   const f = buildLeadFields(payload)
+  // text/plain evita el preflight CORS (Apps Script no responde OPTIONS). El doPost lee el JSON igual.
   await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    // payload crudo + campos legibles (señales/techo en texto, mapa y mensaje completo)
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ ...payload, senales_texto: f.senales, techo_texto: f.techo, mapa: f.mapa, mensaje: f.mensaje }),
   })
 }
@@ -199,7 +199,7 @@ async function contactEmailJS(payload: ContactPayload): Promise<void> {
 async function contactSheets(payload: ContactPayload): Promise<void> {
   const url = SHEETS_WEBHOOK_URL
   if (!url) return
-  await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+  await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
 }
 
 async function contactGHL(payload: ContactPayload): Promise<void> {
