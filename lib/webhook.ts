@@ -14,6 +14,11 @@ export interface LeadPayload {
   fuente: 'legend-landing'
 }
 
+// Webhook de Google Sheets (Apps Script). Se puede sobreescribir con la env var en Vercel.
+const SHEETS_WEBHOOK_URL =
+  process.env.NEXT_PUBLIC_SHEETS_WEBHOOK ||
+  'https://script.google.com/macros/s/AKfycbzFCkhBBdCbDaiHqlT0zHWoUGgijmbYXM-AABzlxFyAcVTdutulEicWzPhTGiT9I-BI/exec'
+
 function buildPayload(state: SimState & { result?: string | null }): LeadPayload {
   const probability = state.roof === 'yes' ? '97%' : '93%'
   return {
@@ -31,32 +36,84 @@ function buildPayload(state: SimState & { result?: string | null }): LeadPayload
   }
 }
 
+// Mapea los IDs del formulario a texto legible para el correo.
+const SIGN_LABELS: Record<string, string> = {
+  s1: 'Manchas de humedad en el techo o cielo raso',
+  s2: 'Corrientes de aire frío sin razón aparente',
+  s3: 'Facturas de energía más altas de lo normal',
+  s4: 'Moho visible en el techo',
+}
+const KNEW_LABELS: Record<string, string> = {
+  no: 'No tenía idea de que el seguro podía cubrirlo',
+  heard: 'Lo escuchó pero no sabe si le aplica',
+  yes: 'Sabía pero no sabe cómo reclamarlo',
+}
+
+// Construye los campos legibles + un mensaje completo y organizado del lead.
+function buildLeadFields(payload: LeadPayload) {
+  const senales = payload.señales.length
+    ? payload.señales.map((id) => SIGN_LABELS[id] ?? id).join(', ')
+    : 'Ninguna seleccionada'
+  const techo = KNEW_LABELS[payload.conocia_ct] ?? payload.conocia_ct
+  const mapa = payload.lat && payload.lng
+    ? `https://www.google.com/maps?q=${payload.lat},${payload.lng}`
+    : ''
+  let fecha = payload.timestamp
+  try {
+    fecha = new Date(payload.timestamp).toLocaleString('es-US', { timeZone: 'America/New_York' })
+  } catch {}
+  const mensaje = [
+    '🏠 NUEVO LEAD — Legend Restoration',
+    '',
+    `Nombre: ${payload.nombre}`,
+    `Teléfono: ${payload.telefono}`,
+    `Dirección de la propiedad: ${payload.direccion || 'No proporcionada'}`,
+    mapa ? `Ver en mapa: ${mapa}` : '',
+    '',
+    `Señales reportadas: ${senales}`,
+    `Sobre su techo / seguro: ${techo}`,
+    `Probabilidad de calificar: ${payload.probabilidad}`,
+    '',
+    `Recibido: ${fecha} (hora de Connecticut)`,
+    'Fuente: Landing / Inspección',
+  ].filter(Boolean).join('\n')
+  return { senales, techo, mapa, fecha, mensaje }
+}
+
 async function sendEmailJS(payload: LeadPayload): Promise<void> {
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
   if (!serviceId || !templateId || !publicKey) return
 
+  const f = buildLeadFields(payload)
   const { default: emailjs } = await import('emailjs-com')
   await emailjs.send(serviceId, templateId, {
     to_email: 'legendrestorationllc@gmail.com',
+    subject: `Nuevo lead: ${payload.nombre} · ${payload.telefono}`,
+    // Campos individuales (por si tu plantilla los usa uno por uno):
     nombre: payload.nombre,
     telefono: payload.telefono,
     direccion: payload.direccion || 'No proporcionada',
-    señales: payload.señales.join(', '),
-    conocia_ct: payload.conocia_ct,
+    mapa: f.mapa || 'No disponible',
+    senales: f.senales,
+    techo: f.techo,
     probabilidad: payload.probabilidad,
-    timestamp: payload.timestamp,
+    fecha: f.fecha,
+    // Mensaje completo ya formateado (con esto solo, la plantilla {{mensaje}} ya trae todo):
+    mensaje: f.mensaje,
   }, publicKey)
 }
 
 async function sendSheets(payload: LeadPayload): Promise<void> {
-  const url = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK
+  const url = SHEETS_WEBHOOK_URL
   if (!url) return
+  const f = buildLeadFields(payload)
   await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    // payload crudo + campos legibles (señales/techo en texto, mapa y mensaje completo)
+    body: JSON.stringify({ ...payload, senales_texto: f.senales, techo_texto: f.techo, mapa: f.mapa, mensaje: f.mensaje }),
   })
 }
 
@@ -119,7 +176,7 @@ function contactDestinationsConfigured(): boolean {
     process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID &&
     process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
   )
-  return emailjsOk || !!process.env.NEXT_PUBLIC_SHEETS_WEBHOOK || !!process.env.NEXT_PUBLIC_GHL_WEBHOOK
+  return emailjsOk || !!SHEETS_WEBHOOK_URL || !!process.env.NEXT_PUBLIC_GHL_WEBHOOK
 }
 
 async function contactEmailJS(payload: ContactPayload): Promise<void> {
@@ -140,7 +197,7 @@ async function contactEmailJS(payload: ContactPayload): Promise<void> {
 }
 
 async function contactSheets(payload: ContactPayload): Promise<void> {
-  const url = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK
+  const url = SHEETS_WEBHOOK_URL
   if (!url) return
   await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
 }
