@@ -17,7 +17,7 @@ export interface LeadPayload {
 // Webhook de Google Sheets (Apps Script). Se puede sobreescribir con la env var en Vercel.
 const SHEETS_WEBHOOK_URL =
   process.env.NEXT_PUBLIC_SHEETS_WEBHOOK ||
-  'https://script.google.com/macros/s/AKfycbzFCkhBBdCbDaiHqlT0zHWoUGgijmbYXM-AABzlxFyAcVTdutulEicWzPhTGiT9I-BI/exec'
+  'https://script.google.com/macros/s/AKfycbx2CYWDHHzcub0biK54CGKNUGvHz5Gy0WXMC1Q5kY5VP0TvrhRAkrTfqdCCq3-GXw7n/exec'
 
 function buildPayload(state: SimState & { result?: string | null }): LeadPayload {
   const probability = state.roof === 'yes' ? '97%' : '93%'
