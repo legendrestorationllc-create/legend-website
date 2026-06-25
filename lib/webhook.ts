@@ -43,10 +43,11 @@ const SIGN_LABELS: Record<string, string> = {
   s3: 'Facturas de energía más altas de lo normal',
   s4: 'Moho visible en el techo',
 }
+// La pregunta 2 es sobre la edad del techo (¿más de 15 años?).
 const KNEW_LABELS: Record<string, string> = {
-  no: 'No tenía idea de que el seguro podía cubrirlo',
-  heard: 'Lo escuchó pero no sabe si le aplica',
-  yes: 'Sabía pero no sabe cómo reclamarlo',
+  yes: 'Techo de más de 15 años',
+  no: 'Techo más nuevo (menos de 15 años)',
+  heard: 'No está seguro de la edad del techo',
 }
 
 // Construye los campos legibles + un mensaje completo y organizado del lead.

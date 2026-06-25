@@ -86,14 +86,14 @@ export const translations = {
       title: '¿Tu techo tiene más de 15 años?',
       infoBox: 'En CT puedes aplicar a un reemplazo completo cubierto por tu seguro.',
       options: [
-        { value: 'no', emoji: '❌', label: 'No tenía idea — ¿cómo funciona?' },
-        { value: 'heard', emoji: '🤔', label: 'Lo escuché pero no sé si me aplica' },
-        { value: 'yes', emoji: '✅', label: 'Sí lo sabía pero no sé cómo reclamarlo' },
+        { value: 'yes', emoji: '✅', label: 'Sí, tiene más de 15 años' },
+        { value: 'no', emoji: '🏠', label: 'No, es más nuevo' },
+        { value: 'heard', emoji: '🤔', label: 'No estoy seguro' },
       ],
       confirms: {
-        no: '🔑 ¡Ahora lo sabes! CT es uno de los pocos estados con esta cobertura. Confirmemos si tu propiedad aplica.',
-        heard: '🔍 Perfecto — vamos a verificar si tu propiedad califica en este momento.',
-        yes: '✅ Excelente. Confirmemos si tu techo califica ahora mismo.',
+        yes: '✅ Perfecto — un techo de más de 15 años suele tener un caso más fuerte. Confirmemos.',
+        no: '🔍 Aun así, el daño por tormenta puede estar cubierto. Vamos a verificar.',
+        heard: '👍 No te preocupes — lo confirmamos en la inspección gratis.',
       },
     },
     stepAddress: {
@@ -312,14 +312,14 @@ export const translations = {
       title: 'Is your roof over 15 years old?',
       infoBox: 'In CT you may qualify for a full replacement covered by your insurance.',
       options: [
-        { value: 'no', emoji: '❌', label: "I had no idea — how does it work?" },
-        { value: 'heard', emoji: '🤔', label: "I heard about it but don't know if it applies to me" },
-        { value: 'yes', emoji: '✅', label: "I knew but don't know how to claim it" },
+        { value: 'yes', emoji: '✅', label: 'Yes, over 15 years old' },
+        { value: 'no', emoji: '🏠', label: "No, it's newer" },
+        { value: 'heard', emoji: '🤔', label: "I'm not sure" },
       ],
       confirms: {
-        no: "🔑 Now you know! CT is one of the few states with this coverage. Let's confirm if your property qualifies.",
-        heard: "🔍 Perfect — let's verify if your property qualifies right now.",
-        yes: "✅ Excellent. Let's confirm if your roof qualifies right now.",
+        yes: "✅ Great — a roof over 15 years usually has a stronger case. Let's confirm.",
+        no: '🔍 Storm damage can still be covered. Let’s check it out.',
+        heard: '👍 No worries — we’ll confirm it during the free inspection.',
       },
     },
     stepAddress: {
