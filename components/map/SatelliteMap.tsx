@@ -9,18 +9,24 @@ interface Props {
   placeholder?: string
 }
 
-export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, placeholder = 'Escribe tu dirección completa...' }: Props) {
+// Autocompletado de direcciones con LISTA PROPIA de sugerencias.
+// En vez del widget .pac-container de Google (que choca con el autofill del navegador
+// y a veces no se despliega), usamos AutocompleteService + PlacesService y renderizamos
+// nuestra propia lista, que aparece SOLA al escribir y controlamos por completo.
+export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, placeholder = 'Escribe tu dirección...' }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markerRef = useRef<google.maps.Marker | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+  const acServiceRef = useRef<google.maps.places.AutocompleteService | null>(null)
+  const placesServiceRef = useRef<google.maps.places.PlacesService | null>(null)
+  const blurTimer = useRef<number | null>(null)
   const [verified, setVerified] = useState(false)
   const [mapsAvailable, setMapsAvailable] = useState(false)
+  const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([])
+  const [open, setOpen] = useState(false)
 
   const initMap = useCallback(() => {
     if (!mapRef.current || mapInstanceRef.current) return
-
     const map = new google.maps.Map(mapRef.current, {
       center: { lat: 41.6032, lng: -73.0877 },
       zoom: 9,
@@ -31,79 +37,81 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
       mapTypeControl: false,
       streetViewControl: false,
     })
-
-    const marker = new google.maps.Marker({
-      map,
-      animation: google.maps.Animation.DROP,
-      visible: false,
-    })
-
+    markerRef.current = new google.maps.Marker({ map, animation: google.maps.Animation.DROP, visible: false })
     mapInstanceRef.current = map
-    markerRef.current = marker
     setMapsAvailable(true)
   }, [])
 
-  const initAutocomplete = useCallback(() => {
-    if (!inputRef.current || autocompleteRef.current) return
-    if (!window.google?.maps?.places) return
-
-    const ac = new google.maps.places.Autocomplete(inputRef.current, {
-      types: ['address'],
-      componentRestrictions: { country: 'us' },
-      fields: ['formatted_address', 'geometry'],
-    })
-
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace()
-      if (!place.geometry?.location) return
-
-      const lat = place.geometry.location.lat()
-      const lng = place.geometry.location.lng()
-      const address = place.formatted_address ?? ''
-
-      onAddressSelect(address, lat, lng)
-      onInputChange(address)
-
-      const map = mapInstanceRef.current
-      const marker = markerRef.current
-      if (!map || !marker) return
-
-      map.panTo({ lat, lng })
-      setTimeout(() => {
-        map.setZoom(19)
-        map.setCenter({ lat, lng })
-        marker.setPosition({ lat, lng })
-        marker.setVisible(true)
-        setVerified(true)
-        setTimeout(() => map.setCenter({ lat, lng }), 250)
-      }, 200)
-    })
-
-    autocompleteRef.current = ac
-
-    // El autocompletado nativo del navegador (Chrome/Safari) tapa el desplegable de
-    // Google. Google reinicia el atributo a "off" al inicializar, así que lo forzamos
-    // a un valor no estándar DESPUÉS para que el navegador no interfiera y las
-    // sugerencias de Google se desplieguen solas mientras el usuario escribe.
-    inputRef.current.setAttribute('autocomplete', 'new-password')
-  }, [onAddressSelect, onInputChange])
+  const initServices = useCallback(() => {
+    if (acServiceRef.current || !window.google?.maps?.places) return
+    acServiceRef.current = new google.maps.places.AutocompleteService()
+    placesServiceRef.current = new google.maps.places.PlacesService(document.createElement('div'))
+  }, [])
 
   useEffect(() => {
     const tryInit = () => {
-      if (window.google?.maps) {
-        initMap()
-        initAutocomplete()
-      }
+      if (window.google?.maps) { initMap(); initServices() }
     }
-
     tryInit()
     window.addEventListener('google-maps-ready', tryInit)
     return () => window.removeEventListener('google-maps-ready', tryInit)
-  }, [initMap, initAutocomplete])
+  }, [initMap, initServices])
 
-  useEffect(() => {
-    if (mapsAvailable) initAutocomplete()
-  }, [mapsAvailable, initAutocomplete])
+  const fetchPredictions = useCallback((val: string) => {
+    if (!acServiceRef.current || val.trim().length < 3) { setPredictions([]); setOpen(false); return }
+    acServiceRef.current.getPlacePredictions(
+      { input: val, componentRestrictions: { country: 'us' }, types: ['address'] },
+      (preds, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && preds && preds.length) {
+          setPredictions(preds.slice(0, 5))
+          setOpen(true)
+        } else {
+          setPredictions([])
+          setOpen(false)
+        }
+      },
+    )
+  }, [])
+
+  const handleChange = (val: string) => {
+    if (verified) setVerified(false)
+    onInputChange(val)
+    fetchPredictions(val)
+  }
+
+  const selectPrediction = (p: google.maps.places.AutocompletePrediction) => {
+    if (blurTimer.current) window.clearTimeout(blurTimer.current)
+    setOpen(false)
+    setPredictions([])
+    onInputChange(p.description)
+    if (!placesServiceRef.current) { onAddressSelect(p.description, 0, 0); setVerified(true); return }
+    placesServiceRef.current.getDetails(
+      { placeId: p.place_id, fields: ['formatted_address', 'geometry'] },
+      (place, status) => {
+        const address = place?.formatted_address ?? p.description
+        if (status === google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
+          const lat = place.geometry.location.lat()
+          const lng = place.geometry.location.lng()
+          onAddressSelect(address, lat, lng)
+          onInputChange(address)
+          const map = mapInstanceRef.current
+          const marker = markerRef.current
+          if (map && marker) {
+            map.panTo({ lat, lng })
+            setTimeout(() => {
+              map.setZoom(19)
+              map.setCenter({ lat, lng })
+              marker.setPosition({ lat, lng })
+              marker.setVisible(true)
+            }, 150)
+          }
+        } else {
+          onAddressSelect(address, 0, 0)
+        }
+        setVerified(true)
+      },
+    )
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
@@ -113,12 +121,14 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
           <span style={{ fontSize: '1rem' }}>👇</span>
         </div>
       )}
+
       <div style={{ position: 'relative' }}>
         <input
-          ref={inputRef}
           type="text"
           value={inputValue}
-          onChange={(e) => onInputChange(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
+          onFocus={() => { if (predictions.length) setOpen(true) }}
+          onBlur={() => { blurTimer.current = window.setTimeout(() => setOpen(false), 150) }}
           placeholder={placeholder}
           autoComplete="new-password"
           autoCorrect="off"
@@ -149,8 +159,33 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
             🛰️ SATÉLITE
           </span>
         )}
-        {!verified && inputValue.trim().length >= 3 && (
-          <span style={{ position: 'absolute', right: '0.8rem', top: '50%', transform: 'translateY(-50%)', fontSize: '1.15rem', pointerEvents: 'none' }} title="Elige tu dirección de la lista">👇</span>
+
+        {/* Lista de sugerencias PROPIA — aparece sola al escribir */}
+        {open && predictions.length > 0 && (
+          <div style={{
+            position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 30,
+            background: 'var(--white)', border: '1px solid var(--border)', borderRadius: 'var(--radius)',
+            boxShadow: '0 12px 30px rgba(0,0,0,.15)', overflow: 'hidden',
+          }}>
+            {predictions.map((p) => (
+              <button
+                key={p.place_id}
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); selectPrediction(p) }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%',
+                  padding: '0.75rem 0.875rem', border: 'none', borderTop: '1px solid var(--light)',
+                  background: 'transparent', cursor: 'pointer', textAlign: 'left',
+                  fontSize: '0.875rem', color: 'var(--navy2)', fontFamily: 'var(--font-dm)',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--light)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+              >
+                <span style={{ flexShrink: 0 }}>📍</span>
+                <span>{p.description}</span>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 
