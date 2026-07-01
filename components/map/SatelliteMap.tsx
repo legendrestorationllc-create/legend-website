@@ -80,6 +80,12 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
     })
 
     autocompleteRef.current = ac
+
+    // El autocompletado nativo del navegador (Chrome/Safari) tapa el desplegable de
+    // Google. Google reinicia el atributo a "off" al inicializar, así que lo forzamos
+    // a un valor no estándar DESPUÉS para que el navegador no interfiera y las
+    // sugerencias de Google se desplieguen solas mientras el usuario escribe.
+    inputRef.current.setAttribute('autocomplete', 'new-password')
   }, [onAddressSelect, onInputChange])
 
   useEffect(() => {
@@ -114,6 +120,10 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
           value={inputValue}
           onChange={(e) => onInputChange(e.target.value)}
           placeholder={placeholder}
+          autoComplete="new-password"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           style={{
             width: '100%',
             padding: '0.875rem 1rem 0.875rem 2.75rem',
