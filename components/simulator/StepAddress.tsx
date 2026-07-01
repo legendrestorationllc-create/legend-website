@@ -31,6 +31,17 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
     setAddressInput(address)
   }
 
+  const handleContinue = () => {
+    // Si el usuario ESCRIBIÓ una dirección pero no seleccionó una sugerencia del
+    // autocompletado de Google, la guardamos igual para no perderla (así el lead
+    // completo sí incluye la dirección).
+    const typed = addressInput.trim()
+    if (typed && typed !== state.address) {
+      setAddress(typed, state.lat ?? 0, state.lng ?? 0)
+    }
+    goNext()
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div>
@@ -49,7 +60,7 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
         placeholder={q.placeholder}
       />
 
-      <button className="btn-primary" onClick={goNext} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
+      <button className="btn-primary" onClick={handleContinue} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
         {q.continue}
       </button>
     </div>
