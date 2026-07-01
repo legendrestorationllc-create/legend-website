@@ -2,13 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useT } from '@/providers/LanguageProvider'
 
-const LOGO_SRC = '/logo.jpg'
-const LOGO_FALLBACK = '/logo.svg'
+const LOGO_SRC = '/logo-legend.png'
+const LOGO_FALLBACK = '/logo.jpg'
 
 export function Header() {
   const { t } = useT()
+  const pathname = usePathname()
+  // En la landing/simulador: logo más chico y ocultamos el CTA "Ver si califico"
+  // (es redundante — el usuario ya está dentro del simulador).
+  const isLanding = pathname?.startsWith('/inspection') ?? false
+  const logoH = isLanding ? 44 : 56
   const [scrolled, setScrolled] = useState(false)
   const [logoSrc, setLogoSrc] = useState(LOGO_SRC)
 
@@ -36,9 +42,6 @@ export function Header() {
       <div className="container-lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.875rem 1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
-            background: 'white',
-            borderRadius: 999,
-            padding: '4px 10px',
             display: 'flex',
             alignItems: 'center',
             flexShrink: 0,
@@ -46,10 +49,11 @@ export function Header() {
             <Image
               src={logoSrc}
               alt="Legend Restoration Logo"
-              height={44}
-              width={160}
-              style={{ objectFit: 'contain', width: 'auto', height: 44 }}
-              sizes="160px"
+              height={346}
+              width={1600}
+              priority
+              style={{ objectFit: 'contain', width: 'auto', height: logoH }}
+              sizes="200px"
               onError={() => setLogoSrc(LOGO_FALLBACK)}
             />
           </div>
@@ -63,9 +67,11 @@ export function Header() {
           >
             📞 {t.contact.phone}
           </a>
-          <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}>
-            {t.header.cta}
-          </button>
+          {!isLanding && (
+            <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}>
+              {t.header.cta}
+            </button>
+          )}
         </nav>
       </div>
     </header>

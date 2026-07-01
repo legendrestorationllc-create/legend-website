@@ -33,13 +33,14 @@ export function GraciasContent() {
     >
       <div style={{ maxWidth: 540, width: '100%', textAlign: 'center', color: 'white' }}>
         <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🎉</div>
-        <h1 style={{ fontFamily: 'var(--font-sora)', fontWeight: 900, fontSize: 'clamp(1.5rem, 5vw, 2rem)', lineHeight: 1.15, marginBottom: '0.75rem' }}>
-          ¡Gracias! Recibimos tu información
+        <h1 style={{ fontFamily: 'var(--font-sora)', fontWeight: 900, fontSize: 'clamp(1.5rem, 5vw, 2rem)', lineHeight: 1.15, marginBottom: '1.25rem' }}>
+          ¡Buenas noticias!
         </h1>
 
-        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', background: 'rgba(201,168,76,.12)', border: '1px solid rgba(201,168,76,.35)', borderRadius: 'var(--radius)', padding: '0.875rem 2rem', marginBottom: '1rem' }}>
-          <span style={{ fontSize: '2rem', fontFamily: 'var(--font-sora)', fontWeight: 900, color: '#C9A84C', lineHeight: 1 }}>🏆 Alta probabilidad</span>
-          <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,.7)', marginTop: '0.25rem' }}>de calificar para un techo nuevo</span>
+        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', background: 'rgba(201,168,76,.12)', border: '1px solid rgba(201,168,76,.4)', borderRadius: 'var(--radius)', padding: '1.5rem 2.75rem', marginBottom: '1.25rem', boxShadow: '0 8px 30px rgba(201,168,76,0.18)' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#C9A84C', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: 'var(--font-sora)' }}>Tu probabilidad de calificar</span>
+          <span style={{ fontSize: 'clamp(3rem, 12vw, 4rem)', fontFamily: 'var(--font-sora)', fontWeight: 900, color: '#C9A84C', lineHeight: 1, margin: '0.35rem 0' }}>97%</span>
+          <span style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,.9)', fontWeight: 600, fontFamily: 'var(--font-sora)' }}>de calificar para un techo nuevo</span>
         </div>
 
         <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,.8)', lineHeight: 1.6, marginBottom: '1.75rem' }}>

@@ -3,13 +3,18 @@
 import type { SimStep } from '@/types/simulator'
 import { useT } from '@/providers/LanguageProvider'
 
-const STEPS: SimStep[] = ['q1', 'q2', 'address', 'lead']
+// 'lead' (contacto) va ANTES de 'address' para capturar el contacto antes del mapa.
+const STEPS: SimStep[] = ['q1', 'q2', 'lead', 'address']
 
 interface Props { current: SimStep }
 
 export function ProgressBar({ current }: Props) {
   const { t } = useT()
-  const labels = t.progressBar.labels
+  // Las labels en translations están en orden original [q1, q2, address, lead];
+  // las mapeamos por paso para respetar el nuevo orden sin tocar las traducciones.
+  const rawLabels = t.progressBar.labels
+  const labelByStep: Record<string, string> = { q1: rawLabels[0], q2: rawLabels[1], address: rawLabels[2], lead: rawLabels[3] }
+  const labels = STEPS.map((s) => labelByStep[s])
   const idx = STEPS.indexOf(current)
 
   return (

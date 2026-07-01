@@ -6,7 +6,7 @@ import { useT } from '@/providers/LanguageProvider'
 
 export function Footer() {
   const { t } = useT()
-  const [logoSrc, setLogoSrc] = useState('/logo.jpg')
+  const [logoSrc, setLogoSrc] = useState('/logo-legend.png')
   const year = new Date().getFullYear()
 
   return (
@@ -19,15 +19,15 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '1rem' }}>
-              <div style={{ background: 'white', borderRadius: 999, padding: '3px 8px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                 <Image
                   src={logoSrc}
                   alt="Legend Restoration"
-                  height={28}
-                  width={100}
-                  style={{ objectFit: 'contain', width: 'auto', height: 28 }}
-                  sizes="100px"
-                  onError={() => setLogoSrc('/logo.svg')}
+                  height={346}
+                  width={1600}
+                  style={{ objectFit: 'contain', width: 'auto', height: 40 }}
+                  sizes="180px"
+                  onError={() => setLogoSrc('/logo.jpg')}
                 />
               </div>
             </div>

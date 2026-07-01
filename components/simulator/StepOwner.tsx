@@ -3,17 +3,19 @@
 import { useState, useEffect } from 'react'
 import { MicroConfirm } from './MicroConfirm'
 import { useT } from '@/providers/LanguageProvider'
-import type { SimState, KnewOption } from '@/types/simulator'
+import type { SimState, OwnerOption } from '@/types/simulator'
 
 interface Props {
   state: SimState
-  setKnew: (value: KnewOption) => void
+  setOwner: (value: OwnerOption) => void
   goNext: () => void
 }
 
-export function StepQ2({ state, setKnew, goNext }: Props) {
+// PASO 1 — Dueño de casa. Pregunta de compromiso (yes-ladder) que califica al lead
+// y enmarca la oferta antes de cualquier otra pregunta.
+export function StepOwner({ state, setOwner, goNext }: Props) {
   const { t } = useT()
-  const q = t.stepQ2
+  const q = t.stepOwner
   const [confirm, setConfirm] = useState<string | null>(null)
   const [advancing, setAdvancing] = useState(false)
 
@@ -27,12 +29,12 @@ export function StepQ2({ state, setKnew, goNext }: Props) {
     return () => window.clearTimeout(id)
   }, [])
 
-  const handleSelect = (value: KnewOption) => {
+  const handleSelect = (value: OwnerOption) => {
     if (advancing) return
-    setKnew(value)
+    setOwner(value)
     setConfirm(q.confirms[value])
     setAdvancing(true)
-    setTimeout(() => goNext(), 900)
+    setTimeout(() => goNext(), 800)
   }
 
   return (
@@ -41,16 +43,19 @@ export function StepQ2({ state, setKnew, goNext }: Props) {
         <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem', fontFamily: 'var(--font-sora)' }}>
           {q.label}
         </p>
-        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.125rem', color: 'var(--navy2)', lineHeight: 1.3 }}>
+        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--navy2)', lineHeight: 1.3, marginBottom: '0.5rem' }}>
           {q.title}
         </h3>
+        <div style={{ background: 'var(--light)', borderRadius: 'var(--radius-sm)', padding: '0.625rem 0.875rem', fontSize: '0.8125rem', color: 'var(--navy)', borderLeft: '3px solid var(--orange)' }}>
+          {q.infoBox}
+        </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
         {q.options.map((opt) => {
-          const selected = state.knew === opt.value
+          const selected = state.owner === opt.value
           return (
-            <button key={opt.value} className={`step-option${selected ? ' selected' : ''}`} onClick={() => handleSelect(opt.value as KnewOption)} type="button" disabled={advancing && !selected}>
+            <button key={opt.value} className={`step-option${selected ? ' selected' : ''}`} onClick={() => handleSelect(opt.value as OwnerOption)} type="button" disabled={advancing && !selected}>
               <span className="emoji">{opt.emoji}</span>
               <span style={{ flex: 1, fontWeight: selected ? 600 : 400 }}>{opt.label}</span>
               {selected && <span style={{ color: 'var(--navy)', fontSize: '1.1rem' }}>✓</span>}

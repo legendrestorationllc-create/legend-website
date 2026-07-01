@@ -16,10 +16,10 @@ export function StepAnalyzing({ state, advanceAnalyze, goNext }: Props) {
 
   useEffect(() => {
     if (state.analyzeStep >= q.steps.length) {
-      const timer = setTimeout(goNext, 450)
+      const timer = setTimeout(goNext, 250)
       return () => clearTimeout(timer)
     }
-    const timer = setTimeout(advanceAnalyze, 950)
+    const timer = setTimeout(advanceAnalyze, 360)
     return () => clearTimeout(timer)
   }, [state.analyzeStep, advanceAnalyze, goNext, q.steps.length])
 
@@ -46,7 +46,7 @@ export function StepAnalyzing({ state, advanceAnalyze, goNext }: Props) {
       </div>
 
       <div style={{ background: 'rgba(255,255,255,.08)', borderRadius: 'var(--radius)', overflow: 'hidden', height: 8 }}>
-        <div style={{ height: '100%', background: 'var(--orange)', width: `${(state.analyzeStep / q.steps.length) * 100}%`, transition: 'width 0.8s ease', borderRadius: 'var(--radius)' }} />
+        <div style={{ height: '100%', background: 'var(--orange)', width: `${(state.analyzeStep / q.steps.length) * 100}%`, transition: 'width 0.3s ease', borderRadius: 'var(--radius)' }} />
       </div>
     </div>
   )

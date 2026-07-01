@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { sendLead } from '@/lib/webhook'
 import { toast } from 'sonner'
@@ -14,10 +14,13 @@ interface Props {
 export function StepResult({ state, setResult }: Props) {
   const router = useRouter()
 
+  const sentRef = useRef(false)
   useEffect(() => {
+    if (sentRef.current) return // evita doble envío (React StrictMode en dev / re-render)
+    sentRef.current = true
     setResult('high')
     // 1) Enviar el lead (correo + Google Sheet) ANTES de redirigir.
-    sendLead({ ...state, result: 'high' }).catch(() => {
+    sendLead({ ...state, result: 'high', stage: 'completo' }).catch(() => {
       toast.error('No pudimos guardar tu información. Por favor llámanos directamente.')
     })
     // 2) Redirigir a la página de GRACIAS (URL que dispara la conversión en Meta).

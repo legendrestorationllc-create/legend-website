@@ -1,9 +1,12 @@
 import type { SimState } from '@/types/simulator'
 
 export interface LeadPayload {
+  lead_id: string
+  etapa: string
   nombre: string
   telefono: string
   direccion: string
+  es_dueno: string
   lat: number | null
   lng: number | null
   señales: string[]
@@ -19,12 +22,16 @@ const SHEETS_WEBHOOK_URL =
   process.env.NEXT_PUBLIC_SHEETS_WEBHOOK ||
   'https://script.google.com/macros/s/AKfycbx2CYWDHHzcub0biK54CGKNUGvHz5Gy0WXMC1Q5kY5VP0TvrhRAkrTfqdCCq3-GXw7n/exec'
 
-function buildPayload(state: SimState & { result?: string | null }): LeadPayload {
+function buildPayload(state: SimState & { result?: string | null; stage?: string }): LeadPayload {
   const probability = state.roof === 'yes' ? '97%' : '93%'
+  const esDueno = state.owner === 'yes' ? 'Sí' : state.owner === 'no' ? 'No' : 'No respondió'
   return {
+    lead_id: state.leadId ?? '',
+    etapa: state.stage ?? 'completo',
     nombre: state.name,
     telefono: state.phone,
     direccion: state.address,
+    es_dueno: esDueno,
     lat: state.lat,
     lng: state.lng,
     señales: state.signs,
@@ -64,15 +71,16 @@ function buildLeadFields(payload: LeadPayload) {
     fecha = new Date(payload.timestamp).toLocaleString('es-US', { timeZone: 'America/New_York' })
   } catch {}
   const mensaje = [
-    '🏠 NUEVO LEAD — Legend Restoration',
+    `🏠 NUEVO LEAD (${payload.etapa.toUpperCase()}) — Legend Restoration`,
+    payload.lead_id ? `ID: ${payload.lead_id}` : '',
     '',
     `Nombre: ${payload.nombre}`,
     `Teléfono: ${payload.telefono}`,
-    `Dirección de la propiedad: ${payload.direccion || 'No proporcionada'}`,
+    `Dueño de casa: ${payload.es_dueno}`,
+    `Dirección de la propiedad: ${payload.direccion || 'No proporcionada (lead parcial)'}`,
     mapa ? `Ver en mapa: ${mapa}` : '',
     '',
-    `Señales reportadas: ${senales}`,
-    `Sobre su techo / seguro: ${techo}`,
+    `Sobre su techo: ${techo}`,
     `Probabilidad de calificar: ${payload.probabilidad}`,
     '',
     `Recibido: ${fecha} (hora de Connecticut)`,
@@ -91,7 +99,7 @@ async function sendEmailJS(payload: LeadPayload): Promise<void> {
   const { default: emailjs } = await import('emailjs-com')
   await emailjs.send(serviceId, templateId, {
     to_email: 'legendrestorationllc@gmail.com',
-    subject: `Nuevo lead: ${payload.nombre} · ${payload.telefono}`,
+    subject: `Nuevo lead [${payload.etapa}]: ${payload.nombre} · ${payload.telefono}`,
     // Campos individuales (por si tu plantilla los usa uno por uno):
     nombre: payload.nombre,
     telefono: payload.telefono,
@@ -139,15 +147,16 @@ async function sendGHL(payload: LeadPayload): Promise<void> {
   })
 }
 
-export async function sendLead(state: SimState & { result?: string | null }): Promise<void> {
+export async function sendLead(state: SimState & { result?: string | null; stage?: string }): Promise<void> {
   const payload = buildPayload(state)
-  const results = await Promise.allSettled([
-    sendEmailJS(payload),
-    sendSheets(payload),
-    sendGHL(payload),
-  ])
-  const failed = results.filter(r => r.status === 'rejected')
-  if (failed.length === results.filter(r => r.status !== 'rejected' || true).length) {
+  // El lead PARCIAL (sin dirección) es una red de seguridad silenciosa: se guarda en
+  // Sheet/CRM pero NO envía correo, para no llenar tu bandeja. El correo llega UNA sola
+  // vez, con el lead COMPLETO. Dedupe por lead_id si quieres una sola fila en la Sheet.
+  const tasks = payload.etapa === 'parcial'
+    ? [sendSheets(payload), sendGHL(payload)]
+    : [sendEmailJS(payload), sendSheets(payload), sendGHL(payload)]
+  const results = await Promise.allSettled(tasks)
+  if (results.length > 0 && results.every(r => r.status === 'rejected')) {
     throw new Error('All lead destinations failed')
   }
 }

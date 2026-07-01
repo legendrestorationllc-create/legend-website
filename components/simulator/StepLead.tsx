@@ -1,6 +1,7 @@
 'use client'
 
 import { useT } from '@/providers/LanguageProvider'
+import { sendLead } from '@/lib/webhook'
 import type { SimState } from '@/types/simulator'
 
 interface Props {
@@ -46,7 +47,18 @@ export function StepLead({ state, setField, goNext }: Props) {
         <p style={{ fontSize: '0.8rem', color: 'var(--muted)', lineHeight: 1.5 }}>{q.privacy}</p>
       </div>
 
-      <button className="btn-primary" onClick={goNext} disabled={!canSubmit} style={{ width: '100%', justifyContent: 'center', fontSize: '1rem', padding: '1rem' }}>
+      <button
+        className="btn-primary"
+        onClick={() => {
+          // CAPTURA TEMPRANA: enviamos nombre+teléfono apenas los dan, ANTES del paso
+          // de dirección/mapa. Si la persona abandona ahí, el lead ya quedó guardado.
+          // Fire-and-forget: no bloquea la navegación. (La dirección se enriquece en el resultado.)
+          sendLead({ ...state, stage: 'parcial' }).catch(() => {})
+          goNext()
+        }}
+        disabled={!canSubmit}
+        style={{ width: '100%', justifyContent: 'center', fontSize: '1rem', padding: '1rem' }}
+      >
         {q.cta}
       </button>
     </div>

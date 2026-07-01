@@ -2,12 +2,15 @@ export type SimStep = 'q1' | 'q2' | 'address' | 'lead' | 'analyzing' | 'result'
 
 export type KnewOption = 'no' | 'heard' | 'yes'
 export type RoofOption = 'yes' | 'no' | 'ns'
+export type OwnerOption = 'yes' | 'no'
 export type ResultType = 'high' | 'medium'
 
 export interface SimState {
   step: SimStep
+  leadId: string
   signs: string[]
   knew: KnewOption | null
+  owner: OwnerOption | null
   roof: RoofOption | null
   name: string
   phone: string
@@ -21,6 +24,7 @@ export interface SimState {
 export type SimAction =
   | { type: 'TOGGLE_SIGN'; id: string }
   | { type: 'SET_KNEW'; value: KnewOption }
+  | { type: 'SET_OWNER'; value: OwnerOption }
   | { type: 'SET_ROOF'; value: RoofOption }
   | { type: 'SET_FIELD'; field: 'name' | 'phone'; value: string }
   | { type: 'SET_ADDRESS'; address: string; lat: number; lng: number }

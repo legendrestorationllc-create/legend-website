@@ -1,19 +1,22 @@
 'use client'
 
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ProgressBar } from './ProgressBar'
-import { StepQ1 } from './StepQ1'
+import { StepOwner } from './StepOwner'
 import { StepQ2 } from './StepQ2'
 import { StepAddress } from './StepAddress'
 import { StepLead } from './StepLead'
 import { StepAnalyzing } from './StepAnalyzing'
 import { StepResult } from './StepResult'
 import { useT } from '@/providers/LanguageProvider'
+import { loadGoogleMaps } from '@/lib/loadGoogleMaps'
 import type { SimState } from '@/types/simulator'
 
 interface Props {
   state: SimState
   toggleSign: (id: string) => void
+  setOwner: (v: SimState['owner']) => void
   setKnew: (v: SimState['knew']) => void
   setField: (f: 'name' | 'phone', v: string) => void
   setAddress: (a: string, lat: number, lng: number) => void
@@ -24,10 +27,10 @@ interface Props {
 
 const isNavyBg = (step: SimState['step']) => step === 'analyzing' || step === 'result'
 const isGreenBg = (_step: SimState['step']) => false
-const PROGRESS_STEPS: SimState['step'][] = ['q1', 'q2', 'address', 'lead']
+const PROGRESS_STEPS: SimState['step'][] = ['q1', 'q2', 'lead', 'address']
 
 export function SimulatorCard({
-  state, toggleSign, setKnew,
+  state, toggleSign, setOwner, setKnew,
   setField, setAddress, goStep, advanceAnalyze, setResult,
 }: Props) {
   const { t } = useT()
@@ -36,6 +39,12 @@ export function SimulatorCard({
   const showProgress = PROGRESS_STEPS.includes(state.step)
 
   const bodyBg = darkBg ? 'var(--navy2)' : 'var(--white)'
+
+  // Prefetch de Google Maps al llegar a 'lead' (un paso antes de 'address'),
+  // para que el mapa esté listo sin haber pesado en la carga inicial.
+  useEffect(() => {
+    if (state.step === 'lead' || state.step === 'address') loadGoogleMaps()
+  }, [state.step])
 
   return (
     <div
@@ -68,10 +77,10 @@ export function SimulatorCard({
       <div style={{ padding: '1.5rem', background: bodyBg, minHeight: 320 }}>
         <AnimatePresence mode="wait">
           <motion.div key={state.step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25 }}>
-            {state.step === 'q1' && <StepQ1 state={state} toggleSign={toggleSign} goNext={() => goStep('q2')} />}
-            {state.step === 'q2' && <StepQ2 state={state} setKnew={setKnew} goNext={() => goStep('address')} />}
-            {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('lead')} />}
-            {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('analyzing')} />}
+            {state.step === 'q1' && <StepOwner state={state} setOwner={setOwner} goNext={() => goStep('q2')} />}
+            {state.step === 'q2' && <StepQ2 state={state} setKnew={setKnew} goNext={() => goStep('lead')} />}
+            {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('address')} />}
+            {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('analyzing')} />}
             {state.step === 'analyzing' && <StepAnalyzing state={state} advanceAnalyze={advanceAnalyze} goNext={() => goStep('result')} />}
             {state.step === 'result' && <StepResult state={state} setResult={setResult} />}
           </motion.div>

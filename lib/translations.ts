@@ -68,6 +68,19 @@ export const translations = {
       headerLabel: 'Simulador de Elegibilidad',
       live: 'EN VIVO',
     },
+    stepOwner: {
+      label: 'PASO 1 DE 4',
+      title: '¿Eres dueño de tu casa?',
+      infoBox: 'Solo los propietarios pueden recibir un techo nuevo pagando solo su deducible. Veamos si calificas.',
+      options: [
+        { value: 'yes', emoji: '✅', label: 'Sí' },
+        { value: 'no', emoji: '🚫', label: 'No' },
+      ],
+      confirms: {
+        yes: '✅ ¡Perfecto! Veamos si tu techo califica.',
+        no: '👍 Entendido, gracias por tu respuesta.',
+      },
+    },
     stepQ1: {
       label: 'PREGUNTA 1 DE 4',
       title: '¿Has notado alguna de estas señales en tu hogar?',
@@ -97,13 +110,13 @@ export const translations = {
       },
     },
     stepAddress: {
-      label: 'PASO 3 DE 4',
-      title: '¿Cuál es la dirección de tu propiedad?',
-      continue: 'Continuar →',
-      placeholder: 'Escribe tu dirección completa...',
+      label: 'PASO 4 DE 4',
+      title: '¿Tu ZIP code califica? Verifícalo ahora',
+      continue: 'Ver si califico →',
+      placeholder: 'Escribe tu dirección y la confirmamos...',
     },
     stepLead: {
-      label: 'PASO 4 DE 4',
+      label: 'PASO 3 DE 4',
       title: '¿Dónde enviamos tu resultado?',
       nameLabel: 'Nombre completo *',
       namePlaceholder: 'Tu nombre completo',
@@ -168,7 +181,7 @@ export const translations = {
       tooltip: '💬 ¿Tienes dudas? Escríbenos',
     },
     progressBar: {
-      labels: ['Señales', 'CT Info', 'Dirección', 'Datos'],
+      labels: ['Dueño', 'Tu techo', 'Dirección', 'Contacto'],
     },
     whyLegend: {
       badge: '🏆 ¿Por qué Legend?',
@@ -294,6 +307,19 @@ export const translations = {
       headerLabel: 'Eligibility Simulator',
       live: 'LIVE',
     },
+    stepOwner: {
+      label: 'STEP 1 OF 4',
+      title: 'Do you own your home?',
+      infoBox: 'Only homeowners can get a new roof paying just their deductible. Let’s see if you qualify.',
+      options: [
+        { value: 'yes', emoji: '✅', label: 'Yes' },
+        { value: 'no', emoji: '🚫', label: 'No' },
+      ],
+      confirms: {
+        yes: '✅ Perfect! Let’s see if your roof qualifies.',
+        no: '👍 Got it, thanks for your answer.',
+      },
+    },
     stepQ1: {
       label: 'QUESTION 1 OF 4',
       title: 'Have you noticed any of these signs in your home?',
@@ -323,13 +349,13 @@ export const translations = {
       },
     },
     stepAddress: {
-      label: 'STEP 3 OF 4',
-      title: 'What is your property address?',
-      continue: 'Continue →',
-      placeholder: 'Enter your full address...',
+      label: 'STEP 4 OF 4',
+      title: 'Does your ZIP code qualify? Verify it now',
+      continue: 'See if I qualify →',
+      placeholder: 'Enter your address to confirm...',
     },
     stepLead: {
-      label: 'STEP 4 OF 4',
+      label: 'STEP 3 OF 4',
       title: 'Where do we send your result?',
       nameLabel: 'Full name *',
       namePlaceholder: 'Your full name',
@@ -394,7 +420,7 @@ export const translations = {
       tooltip: '💬 Questions? Write us',
     },
     progressBar: {
-      labels: ['Signs', 'CT Info', 'Address', 'Info'],
+      labels: ['Owner', 'Your roof', 'Address', 'Contact'],
     },
     whyLegend: {
       badge: '🏆 Why Legend?',

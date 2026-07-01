@@ -5,8 +5,10 @@ import type { SimState, SimAction, SimStep } from '@/types/simulator'
 
 const initialState: SimState = {
   step: 'q1',
+  leadId: '',
   signs: [],
   knew: null,
+  owner: null,
   roof: null,
   name: '',
   phone: '',
@@ -28,6 +30,8 @@ function simReducer(state: SimState, action: SimAction): SimState {
     }
     case 'SET_KNEW':
       return { ...state, knew: action.value }
+    case 'SET_OWNER':
+      return { ...state, owner: action.value }
     case 'SET_ROOF':
       return { ...state, roof: action.value }
     case 'SET_FIELD':
@@ -45,11 +49,18 @@ function simReducer(state: SimState, action: SimAction): SimState {
   }
 }
 
+function genLeadId(): string {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+}
+
 export function useSimulator() {
-  const [state, dispatch] = useReducer(simReducer, initialState)
+  const [state, dispatch] = useReducer(simReducer, initialState, (s) => ({ ...s, leadId: genLeadId() }))
 
   const goStep = (step: SimStep) => dispatch({ type: 'GO_STEP', step })
   const toggleSign = (id: string) => dispatch({ type: 'TOGGLE_SIGN', id })
+  const setOwner = (value: SimState['owner']) => {
+    if (value) dispatch({ type: 'SET_OWNER', value })
+  }
   const setKnew = (value: SimState['knew']) => {
     if (value) dispatch({ type: 'SET_KNEW', value })
   }
@@ -65,5 +76,5 @@ export function useSimulator() {
     if (result) dispatch({ type: 'SET_RESULT', result })
   }
 
-  return { state, goStep, toggleSign, setKnew, setRoof, setField, setAddress, advanceAnalyze, setResult }
+  return { state, goStep, toggleSign, setOwner, setKnew, setRoof, setField, setAddress, advanceAnalyze, setResult }
 }

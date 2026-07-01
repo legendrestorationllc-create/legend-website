@@ -25,7 +25,7 @@ export function localBusinessSchema(areas: string[] = SERVICE_AREAS) {
     telephone: business.phoneHref.replace('tel:', ''),
     email: business.email,
     image: `${SITE_URL}/og-image.svg`,
-    logo: `${SITE_URL}/logo.jpg`,
+    logo: `${SITE_URL}/logo-legend.png`,
     priceRange: business.priceRange,
     foundingDate: String(business.foundingYear),
     address: {

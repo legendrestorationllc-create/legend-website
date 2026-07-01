@@ -42,15 +42,15 @@ export function Header() {
       <div className="container-lg flex items-center justify-between py-3">
         {/* Logo */}
         <Link href="/" aria-label="Legend Restoration — Home" className="flex items-center shrink-0">
-          <span className="flex items-center rounded-full bg-white px-2.5 py-1">
+          <span className="flex items-center">
             <Image
-              src="/logo.jpg"
+              src="/logo-legend.png"
               alt="Legend Restoration LLC"
-              height={40}
-              width={146}
+              height={346}
+              width={1600}
               priority
-              sizes="146px"
-              style={{ objectFit: 'contain', width: 'auto', height: 40 }}
+              sizes="220px"
+              style={{ objectFit: 'contain', width: 'auto', height: 52 }}
             />
           </span>
         </Link>
