@@ -101,6 +101,12 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+      {!verified && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8125rem', color: 'var(--navy)', fontWeight: 600, fontFamily: 'var(--font-sora)' }}>
+          <span>Escribe tu dirección y <strong style={{ color: 'var(--orange)' }}>elígela de la lista</strong></span>
+          <span style={{ fontSize: '1rem' }}>👇</span>
+        </div>
+      )}
       <div style={{ position: 'relative' }}>
         <input
           ref={inputRef}
@@ -132,6 +138,9 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
           }}>
             🛰️ SATÉLITE
           </span>
+        )}
+        {!verified && inputValue.trim().length >= 3 && (
+          <span style={{ position: 'absolute', right: '0.8rem', top: '50%', transform: 'translateY(-50%)', fontSize: '1.15rem', pointerEvents: 'none' }} title="Elige tu dirección de la lista">👇</span>
         )}
       </div>
 
