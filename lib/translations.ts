@@ -65,7 +65,7 @@ export const translations = {
       titleHighlight: 'pagar tu techo nuevo',
       sub: 'Responde 4 preguntas y obtén tu evaluación personalizada al instante. Sin costo. Sin compromiso.',
       trust: ['🔒 100% Privado', '✅ Sin compromiso', '🆓 Inspección gratuita'],
-      headerLabel: 'Simulador de Elegibilidad',
+      headerLabel: 'Simulador de',
       live: 'EN VIVO',
     },
     stepOwner: {
@@ -304,7 +304,7 @@ export const translations = {
       titleHighlight: 'pay for your new roof',
       sub: 'Answer 4 questions and get your personalized assessment instantly. No cost. No commitment.',
       trust: ['🔒 100% Private', '✅ No commitment', '🆓 Free inspection'],
-      headerLabel: 'Eligibility Simulator',
+      headerLabel: 'Simulator ·',
       live: 'LIVE',
     },
     stepOwner: {
