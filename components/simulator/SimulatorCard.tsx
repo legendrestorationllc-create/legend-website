@@ -66,6 +66,7 @@ export function SimulatorCard({
           <span style={{ fontFamily: 'var(--font-sora)', fontWeight: 700, fontSize: '0.875rem', color: 'rgba(255,255,255,.9)' }}>
             {t.simulator.headerLabel}
           </span>
+          <span style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '0.875rem', color: '#FF5A5A' }}>· Connecticut</span>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.375rem', background: 'rgba(5,150,105,.2)', borderRadius: 999, padding: '0.25rem 0.625rem' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green)', display: 'block' }} />
             <span style={{ fontSize: '0.6875rem', color: 'var(--green)', fontWeight: 600, fontFamily: 'var(--font-sora)' }}>{t.simulator.live}</span>
