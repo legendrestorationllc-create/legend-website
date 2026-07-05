@@ -111,7 +111,7 @@ export const translations = {
     },
     stepAddress: {
       label: 'PASO 4 DE 4',
-      title: '¿Tu ZIP code califica? Verifícalo ahora',
+      title: '¿Tu dirección califica? Verifícalo ahora',
       continue: 'Ver si califico →',
       placeholder: 'Escribe tu dirección y la confirmamos...',
     },
@@ -350,7 +350,7 @@ export const translations = {
     },
     stepAddress: {
       label: 'STEP 4 OF 4',
-      title: 'Does your ZIP code qualify? Verify it now',
+      title: 'Does your address qualify? Verify it now',
       continue: 'See if I qualify →',
       placeholder: 'Enter your address to confirm...',
     },
