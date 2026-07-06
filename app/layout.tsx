@@ -89,6 +89,14 @@ fbq('track', 'PageView');`}
             alt=""
           />
         </noscript>
+        {/* GoHighLevel / LeadConnector — widget de chat conectado al CRM */}
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6a4c3660c1e521454a1eece5"
+          data-source="WEB_USER"
+          strategy="afterInteractive"
+        />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
