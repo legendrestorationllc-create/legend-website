@@ -10,7 +10,7 @@ export const translations = {
   es: {
     contact,
     header: {
-      cta: 'Verificar si Califico',
+      cta: 'Verifica si calificas',
     },
     hero: {
       badge: '🏠 #1 Roofing Contractor en Connecticut',
@@ -249,7 +249,7 @@ export const translations = {
   en: {
     contact,
     header: {
-      cta: 'Check if I Qualify',
+      cta: 'Check if you qualify',
     },
     hero: {
       badge: '🏠 #1 Roofing Contractor in Connecticut',
