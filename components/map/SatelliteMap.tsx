@@ -7,13 +7,14 @@ interface Props {
   inputValue: string
   onInputChange: (v: string) => void
   placeholder?: string
+  onValidChange?: (valid: boolean) => void
 }
 
 // Autocompletado de direcciones con LISTA PROPIA de sugerencias.
 // En vez del widget .pac-container de Google (que choca con el autofill del navegador
 // y a veces no se despliega), usamos AutocompleteService + PlacesService y renderizamos
 // nuestra propia lista, que aparece SOLA al escribir y controlamos por completo.
-export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, placeholder = 'Escribe tu dirección...' }: Props) {
+export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, placeholder = 'Escribe tu dirección...', onValidChange }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markerRef = useRef<google.maps.Marker | null>(null)
@@ -83,6 +84,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
   const handleChange = (val: string) => {
     if (verified) setVerified(false)
     setOutOfArea(false)
+    onValidChange?.(false)
     onInputChange(val)
     fetchPredictions(val)
   }
@@ -92,7 +94,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
     setOpen(false)
     setPredictions([])
     onInputChange(p.description)
-    if (!placesServiceRef.current) { onAddressSelect(p.description, 0, 0); setVerified(true); return }
+    if (!placesServiceRef.current) { onAddressSelect(p.description, 0, 0); setVerified(true); onValidChange?.(true); return }
     placesServiceRef.current.getDetails(
       { placeId: p.place_id, fields: ['formatted_address', 'geometry', 'address_components'] },
       (place, status) => {
@@ -102,6 +104,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
         if (state && state !== 'CT') {
           setOutOfArea(true)
           setVerified(false)
+          onValidChange?.(false)
           return
         }
         setOutOfArea(false)
@@ -125,6 +128,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
           onAddressSelect(address, 0, 0)
         }
         setVerified(true)
+        onValidChange?.(true)
       },
     )
   }

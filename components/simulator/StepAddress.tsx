@@ -15,6 +15,7 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
   const { t } = useT()
   const q = t.stepAddress
   const [addressInput, setAddressInput] = useState(state.address)
+  const [addressOk, setAddressOk] = useState(false)
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -32,13 +33,9 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
   }
 
   const handleContinue = () => {
-    // Si el usuario ESCRIBIÓ una dirección pero no seleccionó una sugerencia del
-    // autocompletado de Google, la guardamos igual para no perderla (así el lead
-    // completo sí incluye la dirección).
-    const typed = addressInput.trim()
-    if (typed && typed !== state.address) {
-      setAddress(typed, state.lat ?? 0, state.lng ?? 0)
-    }
+    // Solo avanza si hay una dirección VERIFICADA de Connecticut (addressOk).
+    // Ya quedó guardada por handleAddressSelect al elegir la sugerencia.
+    if (!addressOk) return
     goNext()
   }
 
@@ -58,9 +55,10 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
         inputValue={addressInput}
         onInputChange={setAddressInput}
         placeholder={q.placeholder}
+        onValidChange={setAddressOk}
       />
 
-      <button className="btn-primary" onClick={handleContinue} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
+      <button className="btn-primary" onClick={handleContinue} disabled={!addressOk} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
         {q.continue}
       </button>
     </div>
