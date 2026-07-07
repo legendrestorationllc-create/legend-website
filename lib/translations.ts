@@ -38,7 +38,7 @@ export const translations = {
         { emoji: '⭐', label: '4.9/5 estrellas', sub: 'en Google Reviews' },
         { emoji: '🔒', label: 'Licenciados', sub: 'y asegurados en CT' },
         { emoji: '💬', label: 'Hablamos', sub: 'español' },
-        { emoji: '🛡️', label: 'Garantía', sub: 'de 10 años' },
+        { emoji: '🛡️', label: 'Garantía', sub: 'de 50 años' },
       ],
     },
     stats: {
@@ -56,7 +56,7 @@ export const translations = {
       steps: [
         { step: '01', icon: '📋', title: 'Completa el simulador', desc: 'Responde 4 preguntas rápidas para ver si tu propiedad califica. Solo toma 2 minutos.' },
         { step: '02', icon: '🔍', title: 'Inspección gratuita', desc: 'Un experto visita tu propiedad, evalúa el techo y documenta todo para la reclamación.' },
-        { step: '03', icon: '🏠', title: 'Techo nuevo sin estrés', desc: 'Manejamos todo con tu aseguradora. Tú solo pagas el deducible. Garantía de 10 años.' },
+        { step: '03', icon: '🏠', title: 'Techo nuevo sin estrés', desc: 'Manejamos todo con tu aseguradora. Tú solo pagas el deducible. Garantía de 50 años.' },
       ],
     },
     simulator: {
@@ -70,7 +70,7 @@ export const translations = {
     },
     stepOwner: {
       label: 'PASO 1 DE 4',
-      title: '¿Eres dueño de tu casa?',
+      title: '¿Eres dueño de casa?',
       infoBox: 'Solo los dueños de casa pueden aplicar para un reemplazo de techo. Veamos si calificas.',
       options: [
         { value: 'yes', emoji: '✅', label: 'Sí' },
@@ -195,14 +195,14 @@ export const translations = {
       rows: [
         { label: 'Techo completo cubierto', value: 'Por tu seguro' },
         { label: 'Tu costo real', value: 'Solo el deducible' },
-        { label: 'Garantía de trabajo', value: '10 años' },
+        { label: 'Garantía de trabajo', value: '50 años' },
       ],
       features: [
         { icon: '🗣️', title: 'Hablamos tu idioma', desc: 'Todo el proceso en español, sin complicaciones ni letra pequeña.' },
         { icon: '🤝', title: 'Sin costo inicial', desc: 'La inspección y el proceso de reclamación son completamente gratuitos.' },
         { icon: '📋', title: 'Manejamos todo el papeleo', desc: 'Nosotros lidiamos con la aseguradora — tú no tienes que hacer nada.' },
         { icon: '⚡', title: 'Respuesta en 24 horas', desc: 'Un experto te llama el mismo día o al siguiente. Sin esperas.' },
-        { icon: '🛡️', title: 'Garantía de 10 años', desc: 'Todos nuestros trabajos vienen con garantía de materiales y mano de obra.' },
+        { icon: '🛡️', title: 'Garantía de 50 años', desc: 'Todos nuestros trabajos vienen con garantía de materiales y mano de obra.' },
         { icon: '⭐', title: 'Calificación 4.9 estrellas', desc: 'Cientos de familias en CT satisfechas con nuestro trabajo.' },
       ],
     },
@@ -277,7 +277,7 @@ export const translations = {
         { emoji: '⭐', label: '4.9/5 stars', sub: 'on Google Reviews' },
         { emoji: '🔒', label: 'Licensed', sub: 'and insured in CT' },
         { emoji: '💬', label: 'We speak', sub: 'Spanish' },
-        { emoji: '🛡️', label: 'Warranty', sub: '10 years' },
+        { emoji: '🛡️', label: 'Warranty', sub: '50 years' },
       ],
     },
     stats: {
@@ -295,7 +295,7 @@ export const translations = {
       steps: [
         { step: '01', icon: '📋', title: 'Complete the simulator', desc: 'Answer 4 quick questions to see if your property qualifies. It only takes 2 minutes.' },
         { step: '02', icon: '🔍', title: 'Free inspection', desc: 'An expert visits your property, evaluates the roof and documents everything for the claim.' },
-        { step: '03', icon: '🏠', title: 'New roof, no stress', desc: 'We handle everything with your insurer. You only pay your deductible. 10-year warranty.' },
+        { step: '03', icon: '🏠', title: 'New roof, no stress', desc: 'We handle everything with your insurer. You only pay your deductible. 50-year warranty.' },
       ],
     },
     simulator: {
@@ -434,14 +434,14 @@ export const translations = {
       rows: [
         { label: 'Full roof covered', value: 'By your insurance' },
         { label: 'Your real cost', value: 'Only the deductible' },
-        { label: 'Work warranty', value: '10 years' },
+        { label: 'Work warranty', value: '50 years' },
       ],
       features: [
         { icon: '🗣️', title: 'We speak your language', desc: 'The entire process in Spanish, no complications or fine print.' },
         { icon: '🤝', title: 'No upfront cost', desc: 'The inspection and claims process are completely free.' },
         { icon: '📋', title: 'We handle all the paperwork', desc: "We deal with the insurer — you don't have to do anything." },
         { icon: '⚡', title: '24-hour response', desc: 'An expert calls you the same day or the next. No waiting.' },
-        { icon: '🛡️', title: '10-year warranty', desc: 'All our work comes with a materials and labor warranty.' },
+        { icon: '🛡️', title: '50-year warranty', desc: 'All our work comes with a materials and labor warranty.' },
         { icon: '⭐', title: '4.9-star rating', desc: 'Hundreds of satisfied CT families.' },
       ],
     },
