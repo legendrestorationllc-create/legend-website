@@ -12,13 +12,13 @@ export function Simulator() {
   } = useSimulator()
 
   return (
-    <section style={{ background: 'var(--off)', padding: '1.1rem 1rem 2rem', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ background: 'var(--off)', padding: '1.25rem 1rem 2.5rem', position: 'relative', overflow: 'hidden', minHeight: 'calc(100svh - 60px)' }}>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--orange) 0%, var(--navy3) 100%)' }} />
 
       <div className="container-lg" style={{ maxWidth: 780 }}>
         <div style={{ textAlign: 'center', marginBottom: '0.875rem' }}>
           <div className="badge badge-orange" style={{ marginBottom: '0.5rem' }}>{t.simulator.badge}</div>
-          <h2 className="section-title" style={{ marginBottom: 0, fontSize: 'clamp(1.1rem, 4.5vw, 1.6rem)', lineHeight: 1.2 }}>
+          <h2 className="section-title" style={{ marginBottom: 0, fontSize: 'clamp(1.35rem, 5.5vw, 2rem)', lineHeight: 1.18 }}>
             {t.simulator.title}<br />
             <span style={{ color: 'var(--orange)' }}>{t.simulator.titleHighlight}</span>
           </h2>
