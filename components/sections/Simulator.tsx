@@ -1,12 +1,11 @@
 'use client'
 
-import Image from 'next/image'
 import { useSimulator } from '@/hooks/useSimulator'
 import { SimulatorCard } from '@/components/simulator/SimulatorCard'
 import { useT } from '@/providers/LanguageProvider'
 
 export function Simulator() {
-  const { t, lang } = useT()
+  const { t } = useT()
   const {
     state, goStep, toggleSign, setOwner, setKnew,
     setField, setAddress, advanceAnalyze, setResult,
@@ -23,17 +22,6 @@ export function Simulator() {
             {t.simulator.title}<br />
             <span style={{ color: 'var(--orange)' }}>{t.simulator.titleHighlight}</span>
           </h2>
-
-          {/* Rostro humano = confianza: fundador con punto "en línea" */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginTop: '0.625rem' }}>
-            <div style={{ position: 'relative', width: 30, height: 30, flexShrink: 0 }}>
-              <Image src="/daniel.jpg" alt="Daniel, fundador" width={30} height={30} style={{ borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%' }} />
-              <span style={{ position: 'absolute', bottom: -1, right: -1, width: 8, height: 8, borderRadius: '50%', background: 'var(--green)', border: '2px solid var(--off)' }} />
-            </div>
-            <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontWeight: 600, fontFamily: 'var(--font-dm)' }}>
-              {lang === 'es' ? 'Daniel, fundador' : 'Daniel, founder'} · <span style={{ color: 'var(--green)', fontWeight: 700 }}>{lang === 'es' ? 'en línea' : 'online'}</span>
-            </span>
-          </div>
         </div>
 
         <SimulatorCard

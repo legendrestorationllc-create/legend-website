@@ -79,28 +79,11 @@ export function Header() {
           >
             📞 {t.contact.phone}
           </a>
-          {/* Selector de idioma ES / EN (persistente) */}
-          <div style={{ display: 'flex', borderRadius: 999, overflow: 'hidden', border: '1px solid rgba(255,255,255,.22)', flexShrink: 0 }}>
-            {(['es', 'en'] as const).map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                aria-label={l === 'es' ? 'Español' : 'English'}
-                style={{
-                  padding: '0.25rem 0.45rem',
-                  fontSize: '0.66rem',
-                  fontWeight: 800,
-                  fontFamily: 'var(--font-sora)',
-                  background: lang === l ? 'var(--orange)' : 'transparent',
-                  color: lang === l ? '#fff' : 'rgba(255,255,255,.65)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  lineHeight: 1.4,
-                }}
-              >
-                {l.toUpperCase()}
-              </button>
-            ))}
+          {/* Selector de idioma ES / EN (texto sutil, persistente) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'var(--font-sora)', fontWeight: 700, fontSize: '0.75rem', flexShrink: 0 }}>
+            <button onClick={() => setLang('es')} aria-label="Español" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: lang === 'es' ? '#fff' : 'rgba(255,255,255,.45)' }}>ES</button>
+            <span style={{ color: 'rgba(255,255,255,.28)' }}>|</span>
+            <button onClick={() => setLang('en')} aria-label="English" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: lang === 'en' ? '#fff' : 'rgba(255,255,255,.45)' }}>EN</button>
           </div>
           <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.5rem 0.85rem', fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
             {t.header.cta}
