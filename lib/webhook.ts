@@ -152,12 +152,15 @@ export async function sendLead(state: SimState & { result?: string | null; stage
   // El lead PARCIAL (sin dirección) es una red de seguridad silenciosa: se guarda en
   // Sheet/CRM pero NO envía correo, para no llenar tu bandeja. El correo llega UNA sola
   // vez, con el lead COMPLETO. Dedupe por lead_id si quieres una sola fila en la Sheet.
-  // El PARCIAL (paso 3) va SOLO al CRM (GHL) como red de seguridad silenciosa:
-  // NO toca la Sheet ni el correo, así el mismo lead no se cuenta/notifica dos veces.
-  // El COMPLETO (paso 4) va a todo. GHL deduplica el contacto por teléfono.
+  // PASO 3 (parcial, nombre+teléfono): te AVISA por CORREO al instante + CRM.
+  //   → así te enteras del lead apenas deja sus datos y no pierdes ninguno,
+  //     aunque abandone en el paso de la dirección.
+  // PASO 4 (completo, +dirección): escribe la fila COMPLETA en el Excel (Sheet) + CRM.
+  //   → NO re-envía correo, para que nunca te llegue doble.
+  // Resultado: 1 correo por lead + 1 fila en el Excel. GHL deduplica por teléfono.
   const tasks = payload.etapa === 'parcial'
-    ? [sendGHL(payload)]
-    : [sendEmailJS(payload), sendSheets(payload), sendGHL(payload)]
+    ? [sendEmailJS(payload), sendGHL(payload)]
+    : [sendSheets(payload), sendGHL(payload)]
   const results = await Promise.allSettled(tasks)
   if (results.length > 0 && results.every(r => r.status === 'rejected')) {
     throw new Error('All lead destinations failed')
