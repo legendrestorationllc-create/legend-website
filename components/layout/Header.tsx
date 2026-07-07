@@ -9,12 +9,12 @@ const LOGO_SRC = '/logo-legend.png'
 const LOGO_FALLBACK = '/logo.jpg'
 
 export function Header() {
-  const { t, lang, setLang } = useT()
+  const { t } = useT()
   const pathname = usePathname()
   // En la landing/simulador: logo más chico y ocultamos el CTA "Ver si califico"
   // (es redundante — el usuario ya está dentro del simulador).
   const isLanding = pathname?.startsWith('/inspection') ?? false
-  const logoH = isLanding ? 40 : 56
+  const logoH = isLanding ? 34 : 56
   const [scrolled, setScrolled] = useState(false)
   const [logoSrc, setLogoSrc] = useState(LOGO_SRC)
 
@@ -46,28 +46,16 @@ export function Header() {
             alignItems: 'center',
             flexShrink: 0,
           }}>
-            {isLanding ? (
-              <Image
-                src="/logo-icono.png"
-                alt="Legend Restoration"
-                height={80}
-                width={80}
-                priority
-                style={{ objectFit: 'contain', width: 'auto', height: 40 }}
-                sizes="60px"
-              />
-            ) : (
-              <Image
-                src={logoSrc}
-                alt="Legend Restoration Logo"
-                height={346}
-                width={1600}
-                priority
-                style={{ objectFit: 'contain', width: 'auto', height: logoH }}
-                sizes="200px"
-                onError={() => setLogoSrc(LOGO_FALLBACK)}
-              />
-            )}
+            <Image
+              src={logoSrc}
+              alt="Legend Restoration Logo"
+              height={346}
+              width={1600}
+              priority
+              style={{ objectFit: 'contain', width: 'auto', height: logoH }}
+              sizes="200px"
+              onError={() => setLogoSrc(LOGO_FALLBACK)}
+            />
           </div>
         </div>
 
@@ -79,13 +67,7 @@ export function Header() {
           >
             📞 {t.contact.phone}
           </a>
-          {/* Selector de idioma ES / EN (texto sutil, persistente) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'var(--font-sora)', fontWeight: 700, fontSize: '0.75rem', flexShrink: 0 }}>
-            <button onClick={() => setLang('es')} aria-label="Español" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: lang === 'es' ? '#fff' : 'rgba(255,255,255,.45)' }}>ES</button>
-            <span style={{ color: 'rgba(255,255,255,.28)' }}>|</span>
-            <button onClick={() => setLang('en')} aria-label="English" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: lang === 'en' ? '#fff' : 'rgba(255,255,255,.45)' }}>EN</button>
-          </div>
-          <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.5rem 0.85rem', fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
+          <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.45rem 0.8rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
             {t.header.cta}
           </button>
         </nav>
