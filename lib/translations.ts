@@ -60,7 +60,7 @@ export const translations = {
       ],
     },
     simulator: {
-      badge: '🎯 Resultado en 30 segundos',
+      badge: '🎯 Gratis y sin compromiso',
       title: 'En 30 segundos sabes si tu techo',
       titleHighlight: 'califica para reemplazo',
       sub: 'Responde 4 preguntas y obtén tu evaluación personalizada al instante. Sin costo. Sin compromiso.',
@@ -299,7 +299,7 @@ export const translations = {
       ],
     },
     simulator: {
-      badge: '🎯 Result in 30 seconds',
+      badge: '🎯 Free · No commitment',
       title: 'In 30 seconds, see if your roof',
       titleHighlight: 'qualifies for replacement',
       sub: 'Answer 4 questions and get your personalized assessment instantly. No cost. No commitment.',
