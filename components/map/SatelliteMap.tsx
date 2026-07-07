@@ -24,6 +24,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
   const [mapsAvailable, setMapsAvailable] = useState(false)
   const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([])
   const [open, setOpen] = useState(false)
+  const [outOfArea, setOutOfArea] = useState(false)
 
   const initMap = useCallback(() => {
     if (!mapRef.current || mapInstanceRef.current) return
@@ -60,7 +61,13 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
   const fetchPredictions = useCallback((val: string) => {
     if (!acServiceRef.current || val.trim().length < 3) { setPredictions([]); setOpen(false); return }
     acServiceRef.current.getPlacePredictions(
-      { input: val, componentRestrictions: { country: 'us' }, types: ['address'] },
+      {
+        input: val,
+        componentRestrictions: { country: 'us' },
+        types: ['address'],
+        // Sesga las sugerencias hacia Connecticut (aparecen primero las de CT)
+        bounds: new google.maps.LatLngBounds({ lat: 40.98, lng: -73.73 }, { lat: 42.05, lng: -71.79 }),
+      },
       (preds, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && preds && preds.length) {
           setPredictions(preds.slice(0, 5))
@@ -75,6 +82,7 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
 
   const handleChange = (val: string) => {
     if (verified) setVerified(false)
+    setOutOfArea(false)
     onInputChange(val)
     fetchPredictions(val)
   }
@@ -86,9 +94,17 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
     onInputChange(p.description)
     if (!placesServiceRef.current) { onAddressSelect(p.description, 0, 0); setVerified(true); return }
     placesServiceRef.current.getDetails(
-      { placeId: p.place_id, fields: ['formatted_address', 'geometry'] },
+      { placeId: p.place_id, fields: ['formatted_address', 'geometry', 'address_components'] },
       (place, status) => {
         const address = place?.formatted_address ?? p.description
+        // Solo Connecticut: si el estado no es CT, avisamos y NO verificamos
+        const state = place?.address_components?.find((c) => c.types.includes('administrative_area_level_1'))?.short_name
+        if (state && state !== 'CT') {
+          setOutOfArea(true)
+          setVerified(false)
+          return
+        }
+        setOutOfArea(false)
         if (status === google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
           const lat = place.geometry.location.lat()
           const lng = place.geometry.location.lng()
@@ -189,6 +205,11 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
         )}
       </div>
 
+      {outOfArea && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(200,16,46,.08)', border: '1px solid rgba(200,16,46,.25)', borderRadius: 'var(--radius-sm)', padding: '0.5rem 0.875rem', fontSize: '0.8125rem', color: '#C8102E', fontWeight: 600 }}>
+          <span>⚠️</span> Por ahora solo atendemos en Connecticut.
+        </div>
+      )}
       <div className={`map-block${verified ? ' verified' : ''}`} style={{ position: 'relative' }}>
         {verified && (
           <div style={{
