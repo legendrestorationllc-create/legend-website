@@ -9,12 +9,12 @@ const LOGO_SRC = '/logo-legend.png'
 const LOGO_FALLBACK = '/logo.jpg'
 
 export function Header() {
-  const { t } = useT()
+  const { t, lang, setLang } = useT()
   const pathname = usePathname()
   // En la landing/simulador: logo más chico y ocultamos el CTA "Ver si califico"
   // (es redundante — el usuario ya está dentro del simulador).
   const isLanding = pathname?.startsWith('/inspection') ?? false
-  const logoH = isLanding ? 44 : 56
+  const logoH = isLanding ? 40 : 56
   const [scrolled, setScrolled] = useState(false)
   const [logoSrc, setLogoSrc] = useState(LOGO_SRC)
 
@@ -59,7 +59,7 @@ export function Header() {
           </div>
         </div>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
           <a
             href={t.contact.phoneHref}
             style={{ color: 'rgba(255,255,255,.7)', fontSize: '0.875rem', textDecoration: 'none', fontFamily: 'var(--font-dm)' }}
@@ -67,6 +67,29 @@ export function Header() {
           >
             📞 {t.contact.phone}
           </a>
+          {/* Selector de idioma ES / EN (persistente) */}
+          <div style={{ display: 'flex', borderRadius: 999, overflow: 'hidden', border: '1px solid rgba(255,255,255,.22)', flexShrink: 0 }}>
+            {(['es', 'en'] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                aria-label={l === 'es' ? 'Español' : 'English'}
+                style={{
+                  padding: '0.25rem 0.45rem',
+                  fontSize: '0.66rem',
+                  fontWeight: 800,
+                  fontFamily: 'var(--font-sora)',
+                  background: lang === l ? 'var(--orange)' : 'transparent',
+                  color: lang === l ? '#fff' : 'rgba(255,255,255,.65)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  lineHeight: 1.4,
+                }}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
           {/* Mini avatar del fundador con punto verde "en línea" — rostro humano = confianza */}
           <div style={{ position: 'relative', width: 34, height: 34, flexShrink: 0 }}>
             <Image
