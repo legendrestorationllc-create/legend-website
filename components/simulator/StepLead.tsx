@@ -31,14 +31,14 @@ export function StepLead({ state, setField, goNext }: Props) {
           <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.375rem', fontFamily: 'var(--font-sora)' }}>
             {q.nameLabel}
           </label>
-          <input type="text" value={state.name} onChange={(e) => setField('name', e.target.value)} placeholder={q.namePlaceholder} autoComplete="name" style={{ width: '100%', padding: '0.875rem 1rem', border: '2px solid var(--border)', borderRadius: 'var(--radius)', fontSize: '0.9375rem', fontFamily: 'var(--font-dm)', color: 'var(--navy2)', outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--navy)' }} onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)' }} />
+          <input type="text" value={state.name} onChange={(e) => setField('name', e.target.value)} placeholder={q.namePlaceholder} autoComplete="name" style={{ width: '100%', padding: '0.875rem 1rem', border: '2px solid var(--border)', borderRadius: 'var(--radius)', fontSize: '1rem', fontFamily: 'var(--font-dm)', color: 'var(--navy2)', outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--navy)' }} onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)' }} />
         </div>
 
         <div>
           <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.375rem', fontFamily: 'var(--font-sora)' }}>
             {q.phoneLabel}
           </label>
-          <input type="tel" value={state.phone} onChange={(e) => setField('phone', e.target.value)} placeholder={q.phonePlaceholder} autoComplete="tel" style={{ width: '100%', padding: '0.875rem 1rem', border: '2px solid var(--border)', borderRadius: 'var(--radius)', fontSize: '0.9375rem', fontFamily: 'var(--font-dm)', color: 'var(--navy2)', outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--navy)' }} onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)' }} />
+          <input type="tel" value={state.phone} onChange={(e) => setField('phone', e.target.value)} placeholder={q.phonePlaceholder} autoComplete="tel" style={{ width: '100%', padding: '0.875rem 1rem', border: '2px solid var(--border)', borderRadius: 'var(--radius)', fontSize: '1rem', fontFamily: 'var(--font-dm)', color: 'var(--navy2)', outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--navy)' }} onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)' }} />
         </div>
       </div>
 
