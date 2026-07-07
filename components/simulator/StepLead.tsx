@@ -50,6 +50,11 @@ export function StepLead({ state, setField, goNext }: Props) {
       <button
         className="btn-primary"
         onClick={() => {
+          // EVENTO DE CONVERSIÓN para Meta: dispara "Lead" al dar nombre+teléfono.
+          // Así el algoritmo de Meta optimiza por LEADS reales, no por clics baratos.
+          if (typeof window !== 'undefined') {
+            ;(window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.('track', 'Lead')
+          }
           // CAPTURA TEMPRANA: enviamos nombre+teléfono apenas los dan, ANTES del paso
           // de dirección/mapa. Si la persona abandona ahí, el lead ya quedó guardado.
           // Fire-and-forget: no bloquea la navegación. (La dirección se enriquece en el resultado.)
