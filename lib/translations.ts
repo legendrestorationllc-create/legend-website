@@ -71,7 +71,7 @@ export const translations = {
     stepOwner: {
       label: 'PASO 1 DE 4',
       title: '¿Eres dueño de tu casa?',
-      infoBox: 'Solo los propietarios pueden recibir un techo nuevo pagando solo su deducible. Veamos si calificas.',
+      infoBox: 'Solo los dueños de casa pueden aplicar para un reemplazo de techo. Veamos si calificas.',
       options: [
         { value: 'yes', emoji: '✅', label: 'Sí' },
         { value: 'no', emoji: '🚫', label: 'No' },
@@ -310,7 +310,7 @@ export const translations = {
     stepOwner: {
       label: 'STEP 1 OF 4',
       title: 'Do you own your home?',
-      infoBox: 'Only homeowners can get a new roof paying just their deductible. Let’s see if you qualify.',
+      infoBox: 'Only homeowners can apply for a roof replacement. Let’s see if you qualify.',
       options: [
         { value: 'yes', emoji: '✅', label: 'Yes' },
         { value: 'no', emoji: '🚫', label: 'No' },
