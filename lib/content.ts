@@ -29,8 +29,8 @@ const copyEn = {
 
   hero: {
     badge: '#1 Insurance Roofing in Connecticut',
-    title: 'Your insurance can pay for a new roof.',
-    highlight: 'You only pay your deductible.',
+    title: 'Replace your roof, windows and siding.',
+    highlight: 'See if you qualify in 30 seconds.',
     sub: 'In Connecticut, storm, hail, and wind damage can qualify for a full roof replacement covered by your homeowner’s insurance. Legend Restoration handles the entire claim — start to finish.',
     bullets: ['Free inspection', 'No upfront cost', 'We speak Spanish'],
     ctaLeft: 'Only 30 seconds',
@@ -236,8 +236,8 @@ const copyEs: Copy = {
 
   hero: {
     badge: '#1 en Techos por Seguro en Connecticut',
-    title: 'Tu seguro puede pagar tu techo nuevo.',
-    highlight: 'Solo pagas tu deducible.',
+    title: 'Reemplaza techo, ventanas y siding.',
+    highlight: 'Mira si calificas en 30 segundos.',
     sub: 'En Connecticut, los daños por tormenta, granizo y viento pueden calificar para un reemplazo completo del techo cubierto por tu seguro de propietario. Legend Restoration maneja todo el claim — de principio a fin.',
     bullets: ['Inspección gratuita', 'Sin costo inicial', 'Hablamos español'],
     ctaLeft: 'Solo 30 segundos',
