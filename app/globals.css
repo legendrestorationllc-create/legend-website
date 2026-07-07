@@ -241,7 +241,7 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.25rem;
   background: var(--white);
   border: 2px solid var(--border);
   border-radius: var(--radius);
@@ -249,7 +249,7 @@ img { max-width: 100%; height: auto; display: block; }
   transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
   text-align: left;
   font-family: var(--font-dm);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--navy2);
 }
 .step-option:hover { border-color: var(--navy3); background: var(--light); }

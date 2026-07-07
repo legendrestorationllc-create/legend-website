@@ -43,7 +43,7 @@ export function StepOwner({ state, setOwner, goNext }: Props) {
         <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem', fontFamily: 'var(--font-sora)' }}>
           {q.label}
         </p>
-        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--navy2)', lineHeight: 1.3, marginBottom: '0.5rem' }}>
+        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.4rem', color: 'var(--navy2)', lineHeight: 1.3, marginBottom: '0.5rem' }}>
           {q.title}
         </h3>
         <div style={{ background: 'var(--light)', borderRadius: 'var(--radius-sm)', padding: '0.625rem 0.875rem', fontSize: '0.8125rem', color: 'var(--navy)', borderLeft: '3px solid var(--orange)' }}>

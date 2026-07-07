@@ -55,7 +55,7 @@ export function SimulatorCard({
         boxShadow: 'var(--shadow-lg)',
         overflow: 'hidden',
         transition: 'background 0.4s',
-        maxWidth: 520,
+        maxWidth: 560,
         width: '100%',
         margin: '0 auto',
       }}
@@ -74,7 +74,7 @@ export function SimulatorCard({
         {showProgress && <ProgressBar current={state.step} />}
       </div>
 
-      <div style={{ padding: '1.5rem', background: bodyBg, minHeight: 320 }}>
+      <div style={{ padding: '1.75rem 1.5rem', background: bodyBg, minHeight: 360 }}>
         <AnimatePresence mode="wait">
           <motion.div key={state.step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25 }}>
             {state.step === 'q1' && <StepOwner state={state} setOwner={setOwner} goNext={() => goStep('q2')} />}

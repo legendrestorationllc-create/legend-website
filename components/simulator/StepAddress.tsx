@@ -45,7 +45,7 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
         <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem', fontFamily: 'var(--font-sora)' }}>
           {q.label}
         </p>
-        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--navy2)', lineHeight: 1.3 }}>
+        <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.4rem', color: 'var(--navy2)', lineHeight: 1.3 }}>
           {q.title}
         </h3>
       </div>
