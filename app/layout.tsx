@@ -3,6 +3,7 @@ import { Sora, DM_Sans } from 'next/font/google'
 import { SITE_URL, business } from '@/lib/site'
 import Script from 'next/script'
 import { LanguageProvider } from '@/providers/LanguageProvider'
+import { GhlChat } from '@/components/GhlChat'
 import './globals.css'
 
 const sora = Sora({
@@ -89,14 +90,8 @@ fbq('track', 'PageView');`}
             alt=""
           />
         </noscript>
-        {/* GoHighLevel / LeadConnector — widget de chat conectado al CRM */}
-        <Script
-          src="https://widgets.leadconnectorhq.com/loader.js"
-          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-          data-widget-id="6a4c3660c1e521454a1eece5"
-          data-source="WEB_USER"
-          strategy="afterInteractive"
-        />
+        {/* GoHighLevel / LeadConnector — chat en todo el sitio MENOS /inspection */}
+        <GhlChat />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
