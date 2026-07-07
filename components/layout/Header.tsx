@@ -46,16 +46,28 @@ export function Header() {
             alignItems: 'center',
             flexShrink: 0,
           }}>
-            <Image
-              src={logoSrc}
-              alt="Legend Restoration Logo"
-              height={346}
-              width={1600}
-              priority
-              style={{ objectFit: 'contain', width: 'auto', height: logoH }}
-              sizes="200px"
-              onError={() => setLogoSrc(LOGO_FALLBACK)}
-            />
+            {isLanding ? (
+              <Image
+                src="/logo-icono.png"
+                alt="Legend Restoration"
+                height={80}
+                width={80}
+                priority
+                style={{ objectFit: 'contain', width: 'auto', height: 40 }}
+                sizes="60px"
+              />
+            ) : (
+              <Image
+                src={logoSrc}
+                alt="Legend Restoration Logo"
+                height={346}
+                width={1600}
+                priority
+                style={{ objectFit: 'contain', width: 'auto', height: logoH }}
+                sizes="200px"
+                onError={() => setLogoSrc(LOGO_FALLBACK)}
+              />
+            )}
           </div>
         </div>
 
@@ -89,17 +101,6 @@ export function Header() {
                 {l.toUpperCase()}
               </button>
             ))}
-          </div>
-          {/* Mini avatar del fundador con punto verde "en línea" — rostro humano = confianza */}
-          <div style={{ position: 'relative', width: 34, height: 34, flexShrink: 0 }}>
-            <Image
-              src="/daniel.jpg"
-              alt="Daniel, fundador de Legend Restoration"
-              width={34}
-              height={34}
-              style={{ borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2px solid rgba(255,255,255,.3)' }}
-            />
-            <span style={{ position: 'absolute', bottom: -1, right: -1, width: 9, height: 9, borderRadius: '50%', background: 'var(--green)', border: '2px solid var(--navy2)' }} />
           </div>
           <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.5rem 0.85rem', fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
             {t.header.cta}
