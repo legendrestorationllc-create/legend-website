@@ -14,7 +14,7 @@ export function Header() {
   // En la landing/simulador: logo más chico y ocultamos el CTA "Ver si califico"
   // (es redundante — el usuario ya está dentro del simulador).
   const isLanding = pathname?.startsWith('/inspection') ?? false
-  const logoH = isLanding ? 34 : 56
+  const logoH = isLanding ? 42 : 56
   const [scrolled, setScrolled] = useState(false)
   const [logoSrc, setLogoSrc] = useState(LOGO_SRC)
 
@@ -39,7 +39,7 @@ export function Header() {
       boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,.2)' : 'none',
       transition: 'all 0.3s',
     }}>
-      <div className="container-lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.875rem 1.5rem' }}>
+      <div className="container-lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', padding: '0.875rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             display: 'flex',
@@ -67,7 +67,7 @@ export function Header() {
           >
             📞 {t.contact.phone}
           </a>
-          <button className="btn-primary" onClick={scrollToSim} style={{ padding: '0.45rem 0.8rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
+          <button className="btn-primary hidden md:inline-flex" onClick={scrollToSim} style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
             {t.header.cta}
           </button>
         </nav>
