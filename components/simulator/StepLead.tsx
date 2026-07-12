@@ -2,6 +2,7 @@
 
 import { useT } from '@/providers/LanguageProvider'
 import { sendLead } from '@/lib/webhook'
+import { fbqTrack } from '@/lib/fbq'
 import type { SimState } from '@/types/simulator'
 
 interface Props {
@@ -13,7 +14,9 @@ interface Props {
 export function StepLead({ state, setField, goNext }: Props) {
   const { t } = useT()
   const q = t.stepLead
-  const canSubmit = state.name.trim() !== '' && state.phone.trim() !== ''
+  // Teléfono real (≥10 dígitos): evita leads basura que GHL no puede contactar.
+  const phoneDigits = state.phone.replace(/\D/g, '')
+  const canSubmit = state.name.trim() !== '' && phoneDigits.length >= 10
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -47,17 +50,19 @@ export function StepLead({ state, setField, goNext }: Props) {
         <p style={{ fontSize: '0.8rem', color: 'var(--muted)', lineHeight: 1.5 }}>{q.privacy}</p>
       </div>
 
+      {/* Consentimiento TCPA: necesario para que GHL/IA pueda llamar/textear legalmente.
+          El envío del formulario cuenta como firma electrónica (E-SIGN). */}
+      <p style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.45 }}>{q.consent}</p>
+
       <button
         className="btn-primary"
         onClick={() => {
           // EVENTO DE CONVERSIÓN para Meta: dispara "Lead" al dar nombre+teléfono.
           // Así el algoritmo de Meta optimiza por LEADS reales, no por clics baratos.
-          if (typeof window !== 'undefined') {
-            ;(window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.('track', 'Lead')
-          }
-          // CAPTURA TEMPRANA: enviamos nombre+teléfono apenas los dan, ANTES del paso
-          // de dirección/mapa. Si la persona abandona ahí, el lead ya quedó guardado.
-          // Fire-and-forget: no bloquea la navegación. (La dirección se enriquece en el resultado.)
+          fbqTrack('Lead')
+          // CAPTURA TEMPRANA: enviamos el lead apenas da nombre+teléfono (con la
+          // dirección ya incluida, porque el mapa va antes). Si abandona en el
+          // análisis/resultado, el lead completo ya quedó guardado. Fire-and-forget.
           sendLead({ ...state, stage: 'parcial' }).catch(() => {})
           goNext()
         }}
@@ -66,6 +71,18 @@ export function StepLead({ state, setField, goNext }: Props) {
       >
         {q.cta}
       </button>
+
+      {/* Salida WhatsApp: el canal nativo del público latino. Menos fricción que el
+          formulario para quien desconfía de dar datos en una página. */}
+      <a
+        href={`https://wa.me/18633815735?text=${encodeURIComponent(q.whatsappPrefill)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => fbqTrack('Contact')}
+        style={{ textAlign: 'center', fontSize: '0.9375rem', fontWeight: 700, color: '#059669', textDecoration: 'none', fontFamily: 'var(--font-sora)' }}
+      >
+        {q.whatsapp}
+      </a>
     </div>
   )
 }

@@ -3,8 +3,9 @@
 import type { SimStep } from '@/types/simulator'
 import { useT } from '@/providers/LanguageProvider'
 
-// 'lead' (contacto) va ANTES de 'address' para capturar el contacto antes del mapa.
-const STEPS: SimStep[] = ['q1', 'q2', 'lead', 'address']
+// Orden neuromarketing: el mapa ('address') es la recompensa y va ANTES de pedir
+// los datos ('lead'). La captura temprana sigue intacta: se envía al dar nombre+tel.
+const STEPS: SimStep[] = ['q1', 'q2', 'address', 'lead']
 
 interface Props { current: SimStep }
 
