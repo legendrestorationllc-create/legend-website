@@ -26,6 +26,9 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
   const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([])
   const [open, setOpen] = useState(false)
   const [outOfArea, setOutOfArea] = useState(false)
+  // MODO MANUAL: si Google Maps no carga (navegador de Facebook, red lenta),
+  // la dirección escrita a mano vale — el embudo NUNCA se queda sin salida.
+  const [manualMode, setManualMode] = useState(false)
 
   const initMap = useCallback(() => {
     if (!mapRef.current || mapInstanceRef.current) return
@@ -52,11 +55,19 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
 
   useEffect(() => {
     const tryInit = () => {
-      if (window.google?.maps) { initMap(); initServices() }
+      if (window.google?.maps) { initMap(); initServices(); setManualMode(false) }
     }
     tryInit()
     window.addEventListener('google-maps-ready', tryInit)
-    return () => window.removeEventListener('google-maps-ready', tryInit)
+    // RESPALDO: si Maps no está listo en 4s, pasamos a modo manual para no
+    // bloquear al usuario (antes: botón muerto sin mensaje = lead perdido).
+    const fallback = window.setTimeout(() => {
+      if (!window.google?.maps?.places) setManualMode(true)
+    }, 4000)
+    return () => {
+      window.removeEventListener('google-maps-ready', tryInit)
+      window.clearTimeout(fallback)
+    }
   }, [initMap, initServices])
 
   const fetchPredictions = useCallback((val: string) => {
@@ -84,8 +95,16 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
   const handleChange = (val: string) => {
     if (verified) setVerified(false)
     setOutOfArea(false)
-    onValidChange?.(false)
     onInputChange(val)
+    if (manualMode) {
+      // Sin Maps: una dirección escrita completa (con número) cuenta como válida.
+      const ok = val.trim().length >= 8 && /\d/.test(val)
+      if (ok) onAddressSelect(val.trim(), 0, 0)
+      setVerified(ok)
+      onValidChange?.(ok)
+      return
+    }
+    onValidChange?.(false)
     fetchPredictions(val)
   }
 
@@ -137,7 +156,11 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
       {!verified && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8125rem', color: 'var(--navy)', fontWeight: 600, fontFamily: 'var(--font-sora)' }}>
-          <span>Escribe tu dirección y <strong style={{ color: 'var(--orange)' }}>elígela de la lista</strong></span>
+          {manualMode ? (
+            <span>Escribe tu dirección completa <strong style={{ color: 'var(--orange)' }}>(número, calle y ciudad)</strong></span>
+          ) : (
+            <span>Escribe tu dirección y <strong style={{ color: 'var(--orange)' }}>elígela de la lista</strong></span>
+          )}
           <span style={{ fontSize: '1rem' }}>👇</span>
         </div>
       )}

@@ -114,6 +114,8 @@ export const translations = {
       title: 'Veamos tu techo en el satélite 🛰️',
       continue: 'Continuar →',
       placeholder: 'Escribe tu dirección y la confirmamos...',
+      chooseHint: '👆 Elige tu dirección de la lista para continuar',
+      skip: '¿Problemas con la dirección? Continúa y la confirmamos por teléfono →',
     },
     stepLead: {
       label: 'PASO 4 DE 4',
@@ -134,8 +136,6 @@ export const translations = {
       steps: [
         'Verificando tu propiedad en Connecticut...',
         'Consultando historial de tormentas en tu zona...',
-        'Evaluando criterios de tu aseguradora...',
-        'Calculando probabilidad de aprobación...',
         '¡Listo! Preparando tu resultado personalizado...',
       ],
     },
@@ -356,6 +356,8 @@ export const translations = {
       title: 'Let’s see your roof on the satellite 🛰️',
       continue: 'Continue →',
       placeholder: 'Enter your address to confirm...',
+      chooseHint: '👆 Pick your address from the list to continue',
+      skip: 'Address trouble? Continue and we’ll confirm it by phone →',
     },
     stepLead: {
       label: 'STEP 4 OF 4',
@@ -376,8 +378,6 @@ export const translations = {
       steps: [
         'Verifying your property in Connecticut...',
         'Checking storm history in your area...',
-        "Evaluating your insurer's criteria...",
-        'Calculating approval probability...',
         'Ready! Preparing your personalized result...',
       ],
     },

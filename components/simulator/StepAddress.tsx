@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { SatelliteMap } from '@/components/map/SatelliteMap'
 import { useT } from '@/providers/LanguageProvider'
+import { fbqTrack } from '@/lib/fbq'
 import type { SimState } from '@/types/simulator'
 
 interface Props {
@@ -60,6 +61,22 @@ export function StepAddress({ state, setAddress, goNext }: Props) {
 
       <button className="btn-primary" onClick={handleContinue} disabled={!addressOk} style={{ width: '100%', justifyContent: 'center', marginTop: '0.25rem' }}>
         {q.continue}
+      </button>
+
+      {/* Guía cuando escribió pero no eligió de la lista (antes: botón muerto sin explicación) */}
+      {!addressOk && addressInput.trim().length >= 4 && (
+        <p style={{ fontSize: '0.8125rem', color: 'var(--orange)', textAlign: 'center', fontWeight: 600 }}>
+          {q.chooseHint}
+        </p>
+      )}
+
+      {/* Escape: la dirección NUNCA debe costar un lead — se confirma por teléfono */}
+      <button
+        type="button"
+        onClick={() => { fbqTrack('Sim_address_skip', true); goNext() }}
+        style={{ background: 'none', border: 'none', color: 'var(--muted)', fontSize: '0.8125rem', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'var(--font-dm)', padding: '0.25rem' }}
+      >
+        {q.skip}
       </button>
     </div>
   )
