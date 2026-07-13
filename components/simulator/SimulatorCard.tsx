@@ -30,7 +30,7 @@ const isNavyBg = (step: SimState['step']) => step === 'analyzing' || step === 'r
 const isGreenBg = (_step: SimState['step']) => false
 // Orden neuromarketing (wiki: recompensa ANTES de pedir datos): el mapa satelital de
 // SU casa es el momento reptil más fuerte → va antes de nombre+teléfono.
-const PROGRESS_STEPS: SimState['step'][] = ['q1', 'q2', 'address', 'lead']
+const PROGRESS_STEPS: SimState['step'][] = ['q1', 'q2', 'lead', 'address']
 
 export function SimulatorCard({
   state, toggleSign, setOwner, setKnew,
@@ -86,9 +86,9 @@ export function SimulatorCard({
         <AnimatePresence mode="wait">
           <motion.div key={state.step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25 }}>
             {state.step === 'q1' && <StepOwner state={state} setOwner={setOwner} goNext={() => goStep('q2')} />}
-            {state.step === 'q2' && <StepQ2 state={state} setKnew={setKnew} goNext={() => goStep('address')} />}
-            {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('lead')} />}
-            {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('analyzing')} />}
+            {state.step === 'q2' && <StepQ2 state={state} setKnew={setKnew} goNext={() => goStep('lead')} />}
+            {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('analyzing')} />}
+            {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('address')} />}
             {state.step === 'analyzing' && <StepAnalyzing state={state} advanceAnalyze={advanceAnalyze} goNext={() => goStep('result')} />}
             {state.step === 'result' && <StepResult state={state} setResult={setResult} />}
           </motion.div>
