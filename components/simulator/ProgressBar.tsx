@@ -5,17 +5,14 @@ import { useT } from '@/providers/LanguageProvider'
 
 // Orden de captación: pedimos nombre+teléfono ('lead') ANTES de la dirección ('address'),
 // para tener SIEMPRE a quién llamar aunque abandonen en el paso de la dirección.
-const STEPS: SimStep[] = ['q1', 'q2', 'lead', 'address']
+const STEPS: SimStep[] = ['q1', 'lead', 'address']
 
 interface Props { current: SimStep }
 
 export function ProgressBar({ current }: Props) {
   const { t } = useT()
-  // Las labels en translations están en orden original [q1, q2, address, lead];
-  // las mapeamos por paso para respetar el nuevo orden sin tocar las traducciones.
-  const rawLabels = t.progressBar.labels
-  const labelByStep: Record<string, string> = { q1: rawLabels[0], q2: rawLabels[1], address: rawLabels[2], lead: rawLabels[3] }
-  const labels = STEPS.map((s) => labelByStep[s])
+  // Las labels ya vienen en el orden del flujo: [qué reemplazar, contacto, dirección].
+  const labels = t.progressBar.labels
   const idx = STEPS.indexOf(current)
 
   return (

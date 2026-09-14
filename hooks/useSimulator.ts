@@ -9,6 +9,7 @@ const initialState: SimState = {
   signs: [],
   knew: null,
   owner: null,
+  service: null,
   roof: null,
   name: '',
   phone: '',
@@ -32,6 +33,8 @@ function simReducer(state: SimState, action: SimAction): SimState {
       return { ...state, knew: action.value }
     case 'SET_OWNER':
       return { ...state, owner: action.value }
+    case 'SET_SERVICE':
+      return { ...state, service: action.value }
     case 'SET_ROOF':
       return { ...state, roof: action.value }
     case 'SET_FIELD':
@@ -58,6 +61,9 @@ export function useSimulator() {
 
   const goStep = (step: SimStep) => dispatch({ type: 'GO_STEP', step })
   const toggleSign = (id: string) => dispatch({ type: 'TOGGLE_SIGN', id })
+  const setService = (value: SimState['service']) => {
+    if (value) dispatch({ type: 'SET_SERVICE', value })
+  }
   const setOwner = (value: SimState['owner']) => {
     if (value) dispatch({ type: 'SET_OWNER', value })
   }
@@ -76,5 +82,5 @@ export function useSimulator() {
     if (result) dispatch({ type: 'SET_RESULT', result })
   }
 
-  return { state, goStep, toggleSign, setOwner, setKnew, setRoof, setField, setAddress, advanceAnalyze, setResult }
+  return { state, goStep, toggleSign, setService, setOwner, setKnew, setRoof, setField, setAddress, advanceAnalyze, setResult }
 }

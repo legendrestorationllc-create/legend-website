@@ -7,7 +7,7 @@ import { useT } from '@/providers/LanguageProvider'
 export function Simulator() {
   const { t } = useT()
   const {
-    state, goStep, toggleSign, setOwner, setKnew,
+    state, goStep, toggleSign, setService,
     setField, setAddress, advanceAnalyze, setResult,
   } = useSimulator()
 
@@ -27,8 +27,7 @@ export function Simulator() {
         <SimulatorCard
           state={state}
           toggleSign={toggleSign}
-          setOwner={setOwner}
-          setKnew={setKnew}
+          setService={setService}
           setField={setField}
           setAddress={setAddress}
           goStep={goStep}

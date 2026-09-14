@@ -3,8 +3,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ProgressBar } from './ProgressBar'
-import { StepOwner } from './StepOwner'
-import { StepQ2 } from './StepQ2'
+import { StepService } from './StepService'
 import { StepAddress } from './StepAddress'
 import { StepLead } from './StepLead'
 import { StepAnalyzing } from './StepAnalyzing'
@@ -17,8 +16,7 @@ import type { SimState } from '@/types/simulator'
 interface Props {
   state: SimState
   toggleSign: (id: string) => void
-  setOwner: (v: SimState['owner']) => void
-  setKnew: (v: SimState['knew']) => void
+  setService: (v: SimState['service']) => void
   setField: (f: 'name' | 'phone', v: string) => void
   setAddress: (a: string, lat: number, lng: number) => void
   goStep: (s: SimState['step']) => void
@@ -30,10 +28,10 @@ const isNavyBg = (step: SimState['step']) => step === 'analyzing' || step === 'r
 const isGreenBg = (_step: SimState['step']) => false
 // Orden neuromarketing (wiki: recompensa ANTES de pedir datos): el mapa satelital de
 // SU casa es el momento reptil más fuerte → va antes de nombre+teléfono.
-const PROGRESS_STEPS: SimState['step'][] = ['q1', 'q2', 'lead', 'address']
+const PROGRESS_STEPS: SimState['step'][] = ['q1', 'lead', 'address']
 
 export function SimulatorCard({
-  state, toggleSign, setOwner, setKnew,
+  state, toggleSign, setService,
   setField, setAddress, goStep, advanceAnalyze, setResult,
 }: Props) {
   const { t } = useT()
@@ -48,7 +46,7 @@ export function SimulatorCard({
   // Además: señales intermedias al píxel (audiencias de retargeting por profundidad
   // del embudo; el evento 'Lead' se dispara en StepLead al dar nombre+teléfono).
   useEffect(() => {
-    if (state.step === 'q2' || state.step === 'address') loadGoogleMaps()
+    if (state.step === 'lead' || state.step === 'address') loadGoogleMaps()
     if (state.step === 'address') fbqTrack('InitiateCheckout')
     if (state.step === 'result') fbqTrack('CompleteRegistration')
     fbqTrack(`Sim_${state.step}`, true)
@@ -85,8 +83,7 @@ export function SimulatorCard({
       <div style={{ padding: '1.75rem 1.5rem', background: bodyBg, minHeight: 360 }}>
         <AnimatePresence mode="wait">
           <motion.div key={state.step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25 }}>
-            {state.step === 'q1' && <StepOwner state={state} setOwner={setOwner} goNext={() => goStep('q2')} />}
-            {state.step === 'q2' && <StepQ2 state={state} setKnew={setKnew} goNext={() => goStep('lead')} />}
+            {state.step === 'q1' && <StepService state={state} setService={setService} goNext={() => goStep('lead')} />}
             {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('analyzing')} />}
             {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('address')} />}
             {state.step === 'analyzing' && <StepAnalyzing state={state} advanceAnalyze={advanceAnalyze} goNext={() => goStep('result')} />}

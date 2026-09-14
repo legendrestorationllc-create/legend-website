@@ -298,3 +298,57 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .analyze-item.active { color: var(--white); font-weight: 600; }
 .analyze-item.done { color: rgba(255,255,255,.9); }
+
+
+/* ---- Paso 1 del simulador: tarjetas con dibujo. Selección en VERDE (Daniel, 14-sep-2026). ---- */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 118px;
+  padding: 1rem 0.4rem 0.85rem;
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--font-dm);
+  transition: border-color .15s, background .15s, box-shadow .15s, transform .1s;
+}
+.service-card:hover { border-color: #c3ccdf; }
+.service-card:active { transform: scale(0.98); }
+.service-card:disabled { opacity: .5; cursor: default; }
+.service-card.selected {
+  border-color: var(--green);
+  background: rgba(5,150,105,.07);
+  box-shadow: 0 6px 18px rgba(5,150,105,.20);
+}
+.service-icon { line-height: 0; transition: transform .18s; }
+.service-card.selected .service-icon { transform: scale(1.06); }
+.service-label {
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--navy2);
+}
+.service-card.selected .service-label { color: var(--green); }
+.service-check {
+  position: absolute; top: 0.45rem; right: 0.45rem;
+  width: 19px; height: 19px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; color: var(--white); transition: all .15s;
+}
+.service-card.selected .service-check { background: var(--green); border-color: var(--green); }
+@media (max-width: 380px) {
+  .service-card { min-height: 104px; padding: 0.8rem 0.3rem 0.7rem; }
+  .service-label { font-size: 0.8125rem; }
+}

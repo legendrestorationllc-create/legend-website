@@ -6,6 +6,7 @@ export interface LeadPayload {
   nombre: string
   telefono: string
   direccion: string
+  servicio: string
   es_dueno: string
   lat: number | null
   lng: number | null
@@ -22,6 +23,9 @@ const SHEETS_WEBHOOK_URL =
   process.env.NEXT_PUBLIC_SHEETS_WEBHOOK ||
   'https://script.google.com/macros/s/AKfycbx2CYWDHHzcub0biK54CGKNUGvHz5Gy0WXMC1Q5kY5VP0TvrhRAkrTfqdCCq3-GXw7n/exec'
 
+// Qué eligió en el paso 1. Va al CRM para que la vendedora sepa de qué le va a hablar.
+const SERVICIO_LABEL: Record<string, string> = { roof: 'Techo', siding: 'Siding', windows: 'Ventanas' }
+
 function buildPayload(state: SimState & { result?: string | null; stage?: string }): LeadPayload {
   const probability = state.roof === 'yes' ? '97%' : '93%'
   const esDueno = state.owner === 'yes' ? 'Sí' : state.owner === 'no' ? 'No' : 'No respondió'
@@ -31,6 +35,7 @@ function buildPayload(state: SimState & { result?: string | null; stage?: string
     nombre: state.name,
     telefono: state.phone,
     direccion: state.address,
+    servicio: SERVICIO_LABEL[state.service ?? ''] ?? 'No respondió',
     es_dueno: esDueno,
     lat: state.lat,
     lng: state.lng,
@@ -137,8 +142,9 @@ async function sendGHL(payload: LeadPayload): Promise<void> {
       lastName: payload.nombre.split(' ').slice(1).join(' ') || '',
       phone: payload.telefono,
       address: payload.direccion,
-      tags: ['legend-landing', payload.resultado],
+      tags: ['legend-landing', payload.resultado, `servicio-${payload.servicio.toLowerCase()}`],
       customField: {
+        servicio: payload.servicio,
         señales: payload.señales.join(', '),
         probabilidad: payload.probabilidad,
         conocia_ct: payload.conocia_ct,

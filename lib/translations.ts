@@ -68,6 +68,21 @@ export const translations = {
       headerLabel: 'Simulador de',
       live: 'EN VIVO',
     },
+    stepService: {
+      label: 'PASO 1 DE 3 · SIN COMPROMISO',
+      title: 'Revisa en 30 segundos si calificas',
+      sub: '¿Qué quieres reemplazar?',
+      options: [
+        { value: 'roof', label: 'Techo' },
+        { value: 'siding', label: 'Siding' },
+        { value: 'windows', label: 'Ventanas' },
+      ],
+      confirms: {
+        roof: '✅ Perfecto. Veamos tu techo.',
+        siding: '✅ Perfecto. Veamos tu siding.',
+        windows: '✅ Perfecto. Veamos tus ventanas.',
+      },
+    },
     stepOwner: {
       label: 'PASO 1 DE 4',
       title: '¿Eres dueño de casa?',
@@ -110,7 +125,7 @@ export const translations = {
       },
     },
     stepAddress: {
-      label: 'PASO 3 DE 4',
+      label: 'PASO 3 DE 3',
       title: 'Veamos tu techo en el satélite 🛰️',
       continue: 'Continuar →',
       placeholder: 'Escribe tu dirección y la confirmamos...',
@@ -118,8 +133,8 @@ export const translations = {
       skip: '¿Problemas con la dirección? Continúa y la confirmamos por teléfono →',
     },
     stepLead: {
-      label: 'PASO 4 DE 4',
-      title: 'Último paso: ¿a dónde enviamos tu resultado?',
+      label: 'PASO 2 DE 3',
+      title: '¿A dónde te enviamos tu resultado?',
       nameLabel: 'Nombre completo *',
       namePlaceholder: 'Tu nombre completo',
       phoneLabel: 'Teléfono *',
@@ -184,7 +199,7 @@ export const translations = {
       tooltip: '💬 ¿Tienes dudas? Escríbenos',
     },
     progressBar: {
-      labels: ['Dueño', 'Tu techo', 'Dirección', 'Contacto'],
+      labels: ['Qué reemplazar', 'Contacto', 'Dirección'],
     },
     whyLegend: {
       badge: '🏆 ¿Por qué Legend?',
@@ -310,6 +325,21 @@ export const translations = {
       headerLabel: 'Simulator ·',
       live: 'LIVE',
     },
+    stepService: {
+      label: 'STEP 1 OF 3 · NO OBLIGATION',
+      title: 'Check in 30 seconds if you qualify',
+      sub: 'What would you like replaced?',
+      options: [
+        { value: 'roof', label: 'Roof' },
+        { value: 'siding', label: 'Siding' },
+        { value: 'windows', label: 'Windows' },
+      ],
+      confirms: {
+        roof: '✅ Great. Let us look at your roof.',
+        siding: '✅ Great. Let us look at your siding.',
+        windows: '✅ Great. Let us look at your windows.',
+      },
+    },
     stepOwner: {
       label: 'STEP 1 OF 4',
       title: 'Do you own your home?',
@@ -352,7 +382,7 @@ export const translations = {
       },
     },
     stepAddress: {
-      label: 'STEP 3 OF 4',
+      label: 'STEP 3 OF 3',
       title: 'Let’s see your roof on the satellite 🛰️',
       continue: 'Continue →',
       placeholder: 'Enter your address to confirm...',
@@ -360,7 +390,7 @@ export const translations = {
       skip: 'Address trouble? Continue and we’ll confirm it by phone →',
     },
     stepLead: {
-      label: 'STEP 4 OF 4',
+      label: 'STEP 2 OF 3',
       title: 'Last step: where do we send your result?',
       nameLabel: 'Full name *',
       namePlaceholder: 'Your full name',
@@ -426,7 +456,7 @@ export const translations = {
       tooltip: '💬 Questions? Write us',
     },
     progressBar: {
-      labels: ['Owner', 'Your roof', 'Address', 'Contact'],
+      labels: ['What to replace', 'Contact', 'Address'],
     },
     whyLegend: {
       badge: '🏆 Why Legend?',
