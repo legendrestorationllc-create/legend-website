@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MicroConfirm } from './MicroConfirm'
 import { useT } from '@/providers/LanguageProvider'
 import { SERVICE_ICON } from '@/lib/serviceIcons'
 import type { SimState, ServiceOption } from '@/types/simulator'
@@ -15,7 +14,6 @@ interface Props {
 export function StepService({ state, setService, goNext }: Props) {
   const { t } = useT()
   const q = t.stepService
-  const [confirm, setConfirm] = useState<string | null>(null)
   const [advancing, setAdvancing] = useState(false)
 
   useEffect(() => {
@@ -28,13 +26,13 @@ export function StepService({ state, setService, goNext }: Props) {
     return () => window.clearTimeout(id)
   }, [])
 
-  // Un toque y avanza solo: nada de botón Continuar en este paso.
+  // Un toque y avanza solo. 160 ms: lo justo para ver la palomita verde y nada más.
+  // Antes eran 800 ms + medio segundo de animación = se sentía trabado.
   const handleSelect = (value: ServiceOption) => {
     if (advancing) return
     setService(value)
-    setConfirm(q.confirms[value])
     setAdvancing(true)
-    setTimeout(() => goNext(), 800)
+    setTimeout(() => goNext(), 160)
   }
 
   return (
@@ -76,7 +74,6 @@ export function StepService({ state, setService, goNext }: Props) {
         })}
       </div>
 
-      <MicroConfirm message={confirm} />
     </div>
   )
 }

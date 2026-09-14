@@ -82,7 +82,13 @@ export function SimulatorCard({
 
       <div style={{ padding: '1.75rem 1.5rem', background: bodyBg, minHeight: 360 }}>
         <AnimatePresence mode="wait">
-          <motion.div key={state.step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.25 }}>
+          <motion.div
+            key={state.step}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10, transition: { duration: 0.1 } }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+          >
             {state.step === 'q1' && <StepService state={state} setService={setService} goNext={() => goStep('lead')} />}
             {state.step === 'address' && <StepAddress state={state} setAddress={setAddress} goNext={() => goStep('analyzing')} />}
             {state.step === 'lead' && <StepLead state={state} setField={setField} goNext={() => goStep('address')} />}

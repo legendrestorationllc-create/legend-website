@@ -198,6 +198,24 @@ export const translations = {
     whatsapp: {
       tooltip: '💬 ¿Tienes dudas? Escríbenos',
     },
+    gracias: {
+      title: '¡Buenas noticias!',
+      probLabel: 'Tu probabilidad de calificar',
+      probSub: 'de calificar para un techo nuevo',
+      body: 'Un experto de <b>Legend Restoration</b> te contactará en menos de <b>24 horas</b> para tu inspección gratuita.',
+      nextLabel: 'Qué sigue',
+      steps: [
+        'Un experto de Legend revisa tu información.',
+        'Te contactamos en menos de 24 horas para agendar tu inspección gratis.',
+        'Documentamos el daño y presentamos la documentación a tu seguro. Tú solo pagas tu deducible.',
+      ],
+      ctaLabel: '👇 Agenda tu inspección GRATIS',
+      whatsapp: '💬 Escríbenos por WhatsApp ahora',
+      waText: 'Hola, acabo de llenar el formulario y quiero agendar mi inspección.',
+      callPrefix: 'o llámanos:',
+      saveError: 'No pudimos guardar tu información. Por favor llámanos directamente.',
+      oneMoment: 'Un momento, por favor.',
+    },
     progressBar: {
       labels: ['Qué reemplazar', 'Contacto', 'Dirección'],
     },
@@ -454,6 +472,24 @@ export const translations = {
     },
     whatsapp: {
       tooltip: '💬 Questions? Write us',
+    },
+    gracias: {
+      title: 'Good news!',
+      probLabel: 'Your chance of qualifying',
+      probSub: 'of qualifying for a new roof',
+      body: 'A <b>Legend Restoration</b> specialist will contact you within <b>24 hours</b> for your free inspection.',
+      nextLabel: 'What happens next',
+      steps: [
+        'A Legend specialist reviews your information.',
+        'We contact you within 24 hours to schedule your free inspection.',
+        'We document the damage and submit the documentation to your insurance. You only pay your deductible.',
+      ],
+      ctaLabel: '👇 Schedule your FREE inspection',
+      whatsapp: '💬 Message us on WhatsApp now',
+      waText: 'Hi, I just filled out the form and I would like to schedule my inspection.',
+      callPrefix: 'or call us:',
+      saveError: 'We could not save your information. Please call us directly.',
+      oneMoment: 'One moment, please.',
     },
     progressBar: {
       labels: ['What to replace', 'Contact', 'Address'],

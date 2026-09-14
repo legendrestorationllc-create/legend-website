@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useT } from '@/providers/LanguageProvider'
 import { sendLead } from '@/lib/webhook'
 import { toast } from 'sonner'
 import type { SimState } from '@/types/simulator'
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function StepResult({ state, setResult }: Props) {
+  const { t: tr } = useT()
   const router = useRouter()
 
   const sentRef = useRef(false)
@@ -21,7 +23,7 @@ export function StepResult({ state, setResult }: Props) {
     setResult('high')
     // 1) Enviar el lead (correo + Google Sheet) ANTES de redirigir.
     sendLead({ ...state, result: 'high', stage: 'completo' }).catch(() => {
-      toast.error('No pudimos guardar tu información. Por favor llámanos directamente.')
+      toast.error(tr.gracias.saveError)
     })
     // 2) Redirigir a la página de GRACIAS (URL que dispara la conversión en Meta).
     const t = setTimeout(() => router.push('/inspection/gracias'), 600)
@@ -35,7 +37,7 @@ export function StepResult({ state, setResult }: Props) {
       <h3 style={{ fontFamily: 'var(--font-sora)', fontWeight: 800, fontSize: '1.0625rem', marginBottom: '0.25rem' }}>
         ¡Listo! Guardando tu información…
       </h3>
-      <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,.6)' }}>Un momento, por favor.</p>
+      <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,.6)' }}>{tr.gracias.oneMoment}</p>
     </div>
   )
 }

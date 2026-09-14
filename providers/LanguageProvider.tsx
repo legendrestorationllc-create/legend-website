@@ -16,16 +16,26 @@ const LanguageContext = createContext<LangCtx>({
   setLang: () => {},
 })
 
-// Idioma: 1) elección guardada del usuario (localStorage) → 2) idioma del navegador
+// Idioma: 1) ?lang=es|en en la URL (para que una pauta en inglés caiga SIEMPRE en inglés;
+// queda guardado) → 2) elección guardada del usuario (localStorage) → 3) idioma del navegador
 // ('es*' → Español, si no → Inglés). SSR y el primer render son Inglés (coincide con el
 // HTML del server → sin desajuste de hidratación); tras montar aplicamos la preferencia.
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>('en')
 
   useEffect(() => {
+    // 1) ?lang= manda y se guarda: así el idioma no se pierde al pasar de paso a paso.
+    const fromUrl = new URLSearchParams(window.location.search).get('lang')?.toLowerCase()
+    if (fromUrl === 'es' || fromUrl === 'en') {
+      setLangState(fromUrl)
+      try { window.localStorage.setItem('lang', fromUrl) } catch {}
+      return
+    }
+    // 2) lo que el usuario ya eligió antes
     let saved: string | null = null
     try { saved = window.localStorage.getItem('lang') } catch {}
     if (saved === 'es' || saved === 'en') { setLangState(saved); return }
+    // 3) el idioma del navegador
     const nav = navigator.language?.toLowerCase() ?? ''
     setLangState(nav.startsWith('es') ? 'es' : 'en')
   }, [])

@@ -77,13 +77,22 @@ export function SatelliteMap({ onAddressSelect, inputValue, onInputChange, place
         input: val,
         componentRestrictions: { country: 'us' },
         types: ['address'],
-        // Sesga las sugerencias hacia Connecticut (aparecen primero las de CT)
+        // Sesga hacia Connecticut; el filtro duro va abajo, sobre los resultados.
         bounds: new google.maps.LatLngBounds({ lat: 40.98, lng: -73.73 }, { lat: 42.05, lng: -71.79 }),
       },
       (preds, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && preds && preds.length) {
-          setPredictions(preds.slice(0, 5))
-          setOpen(true)
+          // SOLO CONNECTICUT. `bounds` únicamente sesga: Google igual devuelve NY, MA y RI.
+          // Google no acepta restricción por estado, así que se filtra aquí: solo se muestran
+          // las sugerencias cuya descripción diga ", CT". Si no queda ninguna, no se abre la lista.
+          const soloCT = preds.filter((p) => /,\s*CT\b/.test(p.description))
+          if (soloCT.length) {
+            setPredictions(soloCT.slice(0, 5))
+            setOpen(true)
+          } else {
+            setPredictions([])
+            setOpen(false)
+          }
         } else {
           setPredictions([])
           setOpen(false)
