@@ -6,6 +6,7 @@ type IconName =
   | 'scale' | 'tag' | 'globe' | 'shield' | 'shieldCheck' | 'bolt' | 'pin'
   | 'phone' | 'mail' | 'clock' | 'check' | 'star' | 'arrowRight'
   | 'trophy' | 'lock' | 'users' | 'document' | 'quote'
+  | 'user' | 'chevronDown' | 'whatsapp' | 'chat'
 
 const STROKE: Partial<Record<IconName, React.ReactNode>> = {
   roof: <><path d="m3 11 9-7 9 7" /><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10" /><path d="M10 21v-6h4v6" /></>,
@@ -29,6 +30,10 @@ const STROKE: Partial<Record<IconName, React.ReactNode>> = {
   users: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.9" /><path d="M16 3.1a4 4 0 0 1 0 7.8" /></>,
   document: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M9 13h6M9 17h6" /></>,
   quote: <><path d="M6 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6c0 3-1 5-4 6" /><path d="M17 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6c0 3-1 5-4 6" /></>,
+  user: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
+  chevronDown: <><path d="m6 9 6 6 6-6" /></>,
+  whatsapp: <><path d="M3.5 20.5 4.8 16A8.5 8.5 0 1 1 8 19.3z" /><path d="M9 8.5c0 3.3 3.2 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.4-2.4-1.8-2.8-2.8l.9-1-1-2z" /></>,
+  chat: <><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2-5.5A8.4 8.4 0 1 1 21 11.5z" /></>,
 }
 
 export function Icon({

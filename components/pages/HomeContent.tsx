@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { CtaBand } from '@/components/CtaBand'
+import { HomeHero } from '@/components/HomeHero'
 import { Faq } from '@/components/Faq'
 import { Icon, type IconName } from '@/components/Icon'
 import { GALLERY } from '@/lib/site'
@@ -23,71 +24,8 @@ export function HomeContent() {
 
   return (
     <>
-      {/* HERO */}
-      <section style={{ background: 'linear-gradient(160deg, var(--navy2) 0%, var(--navy) 60%, var(--navy3) 100%)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(232,64,28,.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '-15%', left: '-8%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,54,144,.45) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-        <div className="container-lg relative grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-            <span className="badge" style={{ background: 'rgba(232,64,28,.15)', color: 'var(--orange)' }}>{c.hero.badge}</span>
-            <h1 className="mt-5 font-sora text-4xl font-extrabold leading-tight text-white md:text-5xl" style={{ fontWeight: 900 }}>
-              {c.hero.title}{' '}
-              <span style={{ background: 'linear-gradient(135deg, var(--orange) 0%, #f5a623 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                {c.hero.highlight}
-              </span>
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,.75)' }}>{c.hero.sub}</p>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm" style={{ color: 'rgba(255,255,255,.75)' }}>
-              {c.hero.bullets.map((b) => (
-                <li key={b} className="inline-flex items-center gap-1.5">
-                  <Icon name="check" size={16} strokeWidth={2.5} style={{ color: 'var(--orange)' }} /> {b}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8">
-              {/* Split CTA — navy "time" half + orange "action" half, one unified button */}
-              <Link
-                href="/inspection"
-                aria-label={`${c.hero.ctaLeft} — ${c.hero.ctaRight}`}
-                className="flex w-full flex-col overflow-hidden rounded-xl transition-transform hover:-translate-y-0.5 sm:inline-flex sm:w-auto sm:flex-row"
-                style={{ boxShadow: 'var(--shadow-orange)' }}
-              >
-                <span className="flex items-center justify-center gap-2 px-6 py-4 font-sora text-sm font-bold text-white" style={{ background: 'var(--navy)' }}>
-                  <Icon name="clock" size={18} /> {c.hero.ctaLeft}
-                </span>
-                <span className="flex items-center justify-center gap-2 px-6 py-4 font-sora text-sm font-bold text-white" style={{ background: 'var(--orange)' }}>
-                  {c.hero.ctaRight} <Icon name="arrowRight" size={18} />
-                </span>
-              </Link>
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
-            <div className="relative overflow-hidden" style={{ borderRadius: 'var(--radius-xl)', boxShadow: '0 20px 60px rgba(0,0,0,.35)', aspectRatio: '4 / 3' }}>
-              <Image
-                src="/hero-roof.jpg"
-                alt="Completed roof replacement by Legend Restoration in Connecticut"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 560px"
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Trust bar */}
-        <div style={{ background: 'rgba(255,255,255,.04)', borderTop: '1px solid rgba(255,255,255,.08)' }}>
-          <div className="container-lg flex flex-wrap items-center justify-center gap-x-8 gap-y-3 py-5 text-sm" style={{ color: 'rgba(255,255,255,.7)' }}>
-            {c.trust.map((item) => (
-              <span key={item.text} className="inline-flex items-center gap-2">
-                <Icon name={item.icon as IconName} size={18} style={{ color: 'var(--orange)' }} /> {item.text}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* HERO — approved mockup (nov-2026) */}
+      <HomeHero />
 
       {/* STATS — navy band, like the landing */}
       <section style={{ background: 'linear-gradient(135deg, var(--navy2) 0%, var(--navy) 100%)', padding: 'clamp(3rem, 6vw, 4.5rem) 0' }}>

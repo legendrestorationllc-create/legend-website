@@ -3,27 +3,18 @@
 import { useState } from 'react'
 import { business } from '@/lib/site'
 import { copy } from '@/lib/content'
-import { sendContact } from '@/lib/webhook'
+import { sendContact, type ContactInput } from '@/lib/webhook'
 import { Icon } from '@/components/Icon'
 import { useT } from '@/providers/LanguageProvider'
 
-type Status = 'idle' | 'sending' | 'ok' | 'error'
+export type ContactStatus = 'idle' | 'sending' | 'ok' | 'error'
 
-export function ContactForm() {
-  const { lang } = useT()
-  const f = copy[lang].contactForm
-  const [status, setStatus] = useState<Status>('idle')
+// Shared submit flow for every contact-style form (this one and the home hero form):
+// same lead destinations, same states and the same mailto fallback.
+export function useContactSubmit() {
+  const [status, setStatus] = useState<ContactStatus>('idle')
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const data = new FormData(e.currentTarget)
-    const input = {
-      name: String(data.get('name') || ''),
-      phone: String(data.get('phone') || ''),
-      email: String(data.get('email') || ''),
-      city: String(data.get('city') || ''),
-      message: String(data.get('message') || ''),
-    }
+  const submit = async (input: ContactInput) => {
     setStatus('sending')
     try {
       const { delivered } = await sendContact(input)
@@ -39,6 +30,26 @@ export function ContactForm() {
     } catch {
       setStatus('error')
     }
+  }
+
+  return { status, submit }
+}
+
+export function ContactForm() {
+  const { lang } = useT()
+  const f = copy[lang].contactForm
+  const { status, submit } = useContactSubmit()
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
+    submit({
+      name: String(data.get('name') || ''),
+      phone: String(data.get('phone') || ''),
+      email: String(data.get('email') || ''),
+      city: String(data.get('city') || ''),
+      message: String(data.get('message') || ''),
+    })
   }
 
   const field =

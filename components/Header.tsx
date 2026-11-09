@@ -9,15 +9,19 @@ import { copy } from '@/lib/content'
 import { Icon } from '@/components/Icon'
 import { useT } from '@/providers/LanguageProvider'
 
+// Top bar (white, scrolls away) + sticky navy menu split around the hanging logo tab.
+// Styles: .hx-* in app/globals.css.
 export function Header() {
   const { lang } = useT()
   const c = copy[lang]
+  const h = c.header
+  const WA_HREF = `${business.whatsappHref}?text=${encodeURIComponent(h.waText)}`
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20)
+    const handler = () => setScrolled(window.scrollY > 40)
     handler()
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
@@ -29,93 +33,96 @@ export function Header() {
   const navLabel = (href: string) =>
     ({ '/': c.nav.home, '/services': c.nav.services, '/service-areas': c.nav.serviceAreas, '/projects': c.nav.projects, '/about': c.nav.about, '/contact': c.nav.contact } as Record<string, string>)[href] ?? href
 
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+
+  const navLink = (item: (typeof NAV)[number]) => {
+    const active = isActive(item.href)
+    return (
+      <Link key={item.href} href={item.href} className={`hx-lk${active ? ' is-on' : ''}`} aria-current={active ? 'page' : undefined}>
+        {navLabel(item.href)}
+      </Link>
+    )
+  }
+
   return (
-    <header
-      className="sticky top-0 z-50 transition-all"
-      style={{
-        background: scrolled ? 'rgba(17,29,74,0.97)' : 'var(--navy2)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: `1px solid rgba(255,255,255,${scrolled ? '.08' : '0'})`,
-        boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,.2)' : 'none',
-      }}
-    >
-      <div className="container-lg flex items-center justify-between py-3">
-        {/* Logo */}
-        <Link href="/" aria-label="Legend Restoration — Home" className="flex items-center shrink-0">
-          <span className="flex items-center">
-            <Image
-              src="/logo-legend.png"
-              alt="Legend Restoration LLC"
-              height={346}
-              width={1600}
-              priority
-              sizes="220px"
-              style={{ objectFit: 'contain', width: 'auto', height: 52 }}
-            />
-          </span>
-        </Link>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7">
-          {NAV.map((item) => {
-            const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="link-underline font-dm text-sm font-medium transition-colors"
-                style={{ color: active ? '#fff' : 'rgba(255,255,255,.7)' }}
-              >
-                {navLabel(item.href)}
-              </Link>
-            )
-          })}
-          <a href={business.phoneHref} className="inline-flex items-center gap-1.5 font-sora text-sm font-bold" style={{ color: '#ffffff' }}>
-            <span aria-hidden style={{ fontSize: '0.95rem' }}>☎</span> {business.phone}
-          </a>
-          <a href={`${business.whatsappHref}?text=Hola%2C%20quiero%20agendar%20una%20inspecci%C3%B3n%20gratis%20de%20mi%20techo.`} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}>
-            {c.cta.freeInspection}
-          </a>
-        </nav>
-
-        {/* Mobile controls */}
-        <div className="flex items-center gap-2 md:hidden">
-          <button
-            className="flex flex-col gap-1.5 p-2"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span className="block h-0.5 w-6 bg-white transition-transform" style={{ transform: open ? 'translateY(8px) rotate(45deg)' : 'none' }} />
-            <span className="block h-0.5 w-6 bg-white transition-opacity" style={{ opacity: open ? 0 : 1 }} />
-            <span className="block h-0.5 w-6 bg-white transition-transform" style={{ transform: open ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
-          </button>
+    <>
+      {/* Top bar */}
+      <div className="hx-topbar" role="region" aria-label={h.help}>
+        <div className="hx-wrap">
+          <div className="hx-tb">
+            <span className="hx-tb-i hx-tb-help">{h.help}</span>
+            <a className="hx-tb-i" href={business.phoneHref}>
+              <Icon name="phone" size={15} /><strong>{business.phone}</strong>
+            </a>
+            <span className="hx-tb-sep" aria-hidden="true" />
+            <a className="hx-tb-i hx-tb-wa" href={WA_HREF} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <Icon name="whatsapp" size={15} /><span>WhatsApp</span>
+            </a>
+          </div>
+          <div className="hx-tb">
+            <a className="hx-tb-i hx-tb-mail" href={`mailto:${business.email}`}>
+              <Icon name="mail" size={15} />{business.email}
+            </a>
+            <span className="hx-tb-sep hx-tb-sep2" aria-hidden="true" />
+            <span className="hx-tb-i"><Icon name="chat" size={15} />{h.spanish}</span>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <nav className="md:hidden" style={{ background: 'var(--navy2)', borderTop: '1px solid rgba(255,255,255,.08)' }}>
-          <div className="container-lg flex flex-col py-3">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="py-3 font-dm text-base font-medium"
-                style={{ color: 'rgba(255,255,255,.85)', borderBottom: '1px solid rgba(255,255,255,.06)' }}
-              >
-                {navLabel(item.href)}
-              </Link>
-            ))}
-            <a href={business.phoneHref} className="inline-flex items-center gap-2 py-3 font-dm text-base" style={{ color: 'rgba(255,255,255,.7)' }}>
-              <Icon name="phone" size={17} /> {business.phone}
+      {/* Navy menu (sticky) */}
+      <header className={`hx-nav${scrolled ? ' is-scrolled' : ''}`}>
+        <nav className="hx-wrap hx-nav-in" aria-label={h.navLabel}>
+          <div className="hx-menu">
+            <a className="hx-nav-ico" href={business.phoneHref} aria-label={`${c.cta.call} ${business.phone}`}>
+              <Icon name="phone" size={19} />
             </a>
-            <a href={`${business.whatsappHref}?text=Hola%2C%20quiero%20agendar%20una%20inspecci%C3%B3n%20gratis%20de%20mi%20techo.`} target="_blank" rel="noopener noreferrer" className="btn-primary mt-3 w-full">
-              {c.cta.freeInspection}
+            {NAV.slice(0, 3).map(navLink)}
+          </div>
+
+          <Link href="/" className="hx-logo-tab" aria-label={h.homeLabel}>
+            <span className="hx-logo-edge" aria-hidden="true" />
+            <span className="hx-logo-face">
+              <Image src="/logo.jpg" alt="Legend Restoration LLC" width={748} height={221} priority sizes="(max-width: 640px) 146px, 206px" />
+            </span>
+          </Link>
+
+          <div className="hx-menu hx-menu-r">
+            {NAV.slice(3).map(navLink)}
+            <a className="hx-btn-nav" href={WA_HREF} target="_blank" rel="noopener noreferrer">
+              {c.cta.freeInspection} <Icon name="arrowRight" size={16} />
             </a>
+            <button
+              type="button"
+              className={`hx-burger${open ? ' is-open' : ''}`}
+              aria-label={open ? h.closeMenu : h.openMenu}
+              aria-expanded={open}
+              aria-controls="hx-mobile-menu"
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span /><span /><span />
+            </button>
           </div>
         </nav>
-      )}
-    </header>
+
+        {/* Mobile / tablet menu */}
+        {open && (
+          <nav id="hx-mobile-menu" className="hx-mnav" aria-label={h.mobileNav}>
+            <div className="hx-wrap">
+              {NAV.map((item) => (
+                <Link key={item.href} href={item.href} className={`hx-mnav-lk${isActive(item.href) ? ' is-on' : ''}`} aria-current={isActive(item.href) ? 'page' : undefined}>
+                  {navLabel(item.href)}
+                </Link>
+              ))}
+              <a href={business.phoneHref} className="hx-mnav-lk hx-mnav-phone">
+                <Icon name="phone" size={17} /> {business.phone}
+              </a>
+              <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="btn-primary mt-3 w-full">
+                {c.cta.freeInspection}
+              </a>
+            </div>
+          </nav>
+        )}
+      </header>
+    </>
   )
 }

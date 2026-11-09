@@ -192,13 +192,16 @@ export interface ContactPayload extends ContactInput {
   fuente: 'legend-website'
 }
 
-function contactDestinationsConfigured(): boolean {
-  const emailjsOk = !!(
+function emailjsConfigured(): boolean {
+  return !!(
     process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID &&
     process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID &&
     process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
   )
-  return emailjsOk || !!SHEETS_WEBHOOK_URL || !!process.env.NEXT_PUBLIC_GHL_WEBHOOK
+}
+
+function contactDestinationsConfigured(): boolean {
+  return emailjsConfigured() || !!SHEETS_WEBHOOK_URL || !!process.env.NEXT_PUBLIC_GHL_WEBHOOK
 }
 
 async function contactEmailJS(payload: ContactPayload): Promise<void> {
@@ -249,10 +252,12 @@ export async function sendContact(input: ContactInput): Promise<{ delivered: boo
     fuente: 'legend-website',
   }
   if (!contactDestinationsConfigured()) return { delivered: false }
+  // Only destinations that are actually configured count: an unconfigured one returns
+  // without sending, and must not turn a failed real send into a false "thank you".
   const results = await Promise.allSettled([
-    contactEmailJS(payload),
-    contactSheets(payload),
-    contactGHL(payload),
+    ...(emailjsConfigured() ? [contactEmailJS(payload)] : []),
+    ...(SHEETS_WEBHOOK_URL ? [contactSheets(payload)] : []),
+    ...(process.env.NEXT_PUBLIC_GHL_WEBHOOK ? [contactGHL(payload)] : []),
   ])
   if (!results.some(r => r.status === 'fulfilled')) {
     throw new Error('All contact destinations failed')
